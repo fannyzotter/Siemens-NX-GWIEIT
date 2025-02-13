@@ -1,0 +1,237 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{AA1B9173-AC0C-4605-BC86-DCB408F80243}|SummerSchool-TEst\\SummerSchool-TEst.csproj|C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\summerschool-test\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA1B9173-AC0C-4605-BC86-DCB408F80243}|SummerSchool-TEst\\SummerSchool-TEst.csproj|solutionrelative:summerschool-test\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{361BF082-A715-43AF-9559-6DD750083CC2}|UI_Summerschool_Forms\\UI_Summerschool_Forms.csproj|C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\ui_summerschool_forms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{361BF082-A715-43AF-9559-6DD750083CC2}|UI_Summerschool_Forms\\UI_Summerschool_Forms.csproj|solutionrelative:ui_summerschool_forms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{361BF082-A715-43AF-9559-6DD750083CC2}|UI_Summerschool_Forms\\UI_Summerschool_Forms.csproj|c:\\users\\laura\\onedrive\\documents\\studium\\7. semester\\projekt\\siemens project\\in arbeit\\summerschool-test\\summerschool-test\\ui_summerschool_forms\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{361BF082-A715-43AF-9559-6DD750083CC2}|UI_Summerschool_Forms\\UI_Summerschool_Forms.csproj|solutionrelative:ui_summerschool_forms\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{361BF082-A715-43AF-9559-6DD750083CC2}|UI_Summerschool_Forms\\UI_Summerschool_Forms.csproj|C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\ui_summerschool_forms\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{361BF082-A715-43AF-9559-6DD750083CC2}|UI_Summerschool_Forms\\UI_Summerschool_Forms.csproj|solutionrelative:ui_summerschool_forms\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1C87D6B-A374-4E4F-B4C2-A0954EE46B70}|Backend-SC\\Backend-SC.csproj|C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\backend-sc\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D1C87D6B-A374-4E4F-B4C2-A0954EE46B70}|Backend-SC\\Backend-SC.csproj|solutionrelative:backend-sc\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|UI_Summerschool_Forms||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB1F710C-A675-4BD0-982D-07FF7279595F}|UI-SummerSchool\\UI-SummerSchool.csproj|C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\ui-summerschool\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{CB1F710C-A675-4BD0-982D-07FF7279595F}|UI-SummerSchool\\UI-SummerSchool.csproj|solutionrelative:ui-summerschool\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB1F710C-A675-4BD0-982D-07FF7279595F}|UI-SummerSchool\\UI-SummerSchool.csproj|C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\ui-summerschool\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB1F710C-A675-4BD0-982D-07FF7279595F}|UI-SummerSchool\\UI-SummerSchool.csproj|solutionrelative:ui-summerschool\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{361BF082-A715-43AF-9559-6DD750083CC2}|UI_Summerschool_Forms\\UI_Summerschool_Forms.csproj|C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\ui_summerschool_forms\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{361BF082-A715-43AF-9559-6DD750083CC2}|UI_Summerschool_Forms\\UI_Summerschool_Forms.csproj|solutionrelative:ui_summerschool_forms\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|UI-SummerSchool||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB1F710C-A675-4BD0-982D-07FF7279595F}|UI-SummerSchool\\UI-SummerSchool.csproj|C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\ui-summerschool\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{CB1F710C-A675-4BD0-982D-07FF7279595F}|UI-SummerSchool\\UI-SummerSchool.csproj|solutionrelative:ui-summerschool\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB1F710C-A675-4BD0-982D-07FF7279595F}|UI-SummerSchool\\UI-SummerSchool.csproj|C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\ui-summerschool\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{CB1F710C-A675-4BD0-982D-07FF7279595F}|UI-SummerSchool\\UI-SummerSchool.csproj|solutionrelative:ui-summerschool\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|SummerSchool-TEst||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|Backend-SC||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Form1.cs [Entwurf]",
+              "DocumentMoniker": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI_Summerschool_Forms\\Form1.cs",
+              "RelativeDocumentMoniker": "UI_Summerschool_Forms\\Form1.cs",
+              "ToolTip": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI_Summerschool_Forms\\Form1.cs [Entwurf]",
+              "RelativeToolTip": "UI_Summerschool_Forms\\Form1.cs [Entwurf]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-02T19:24:06.402Z",
+              "EditorCaption": " [Entwurf]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\Backend-SC\\Class1.cs",
+              "RelativeDocumentMoniker": "Backend-SC\\Class1.cs",
+              "ToolTip": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\Backend-SC\\Class1.cs",
+              "RelativeToolTip": "Backend-SC\\Class1.cs",
+              "ViewState": "AQIAABAAAAAAAAAAAAAYwCIAAAAkAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-02T19:24:06.606Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI_Summerschool_Forms\\Form1.cs",
+              "RelativeDocumentMoniker": "UI_Summerschool_Forms\\Form1.cs",
+              "ToolTip": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI_Summerschool_Forms\\Form1.cs",
+              "RelativeToolTip": "UI_Summerschool_Forms\\Form1.cs",
+              "ViewState": "AQIAABAAAAAAAAAAAAAQwB4AAAAMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-02T19:24:06.698Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\SummerSchool-TEst\\Class1.cs",
+              "RelativeDocumentMoniker": "SummerSchool-TEst\\Class1.cs",
+              "ToolTip": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\SummerSchool-TEst\\Class1.cs",
+              "RelativeToolTip": "SummerSchool-TEst\\Class1.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-02T19:24:06.702Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UI_Summerschool_Forms",
+              "DocumentMoniker": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI_Summerschool_Forms\\UI_Summerschool_Forms.csproj",
+              "RelativeDocumentMoniker": "UI_Summerschool_Forms\\UI_Summerschool_Forms.csproj",
+              "ToolTip": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI_Summerschool_Forms\\UI_Summerschool_Forms.csproj",
+              "RelativeToolTip": "UI_Summerschool_Forms\\UI_Summerschool_Forms.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2023-11-07T16:25:19.406Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI_Summerschool_Forms\\Program.cs",
+              "RelativeDocumentMoniker": "UI_Summerschool_Forms\\Program.cs",
+              "ToolTip": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI_Summerschool_Forms\\Program.cs",
+              "RelativeToolTip": "UI_Summerschool_Forms\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-02T19:24:06.349Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI-SummerSchool\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "UI-SummerSchool\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI-SummerSchool\\MainWindow.xaml.cs",
+              "RelativeToolTip": "UI-SummerSchool\\MainWindow.xaml.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAB4AAAAXAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJnSURBVDhP7VTPaxNREP7eZrPJbmLdpJBNQpJqKLVU2tpDqBClVE969BAQtB7N1bNeBPEfEHq2dwVBqiJIEAwqIaCGCkGEhIYiSTA2Icl2sz98u7xqV5QW2qMfDPOYGT5m3nzvEezBvcfVlTHRczcuC/4Ab93s1d6v53I5g6UPBI55B1MxCbCA9cr30Kct9Y7vZDb37F17jKUPBILrL\u002B\u002BzM2YT0mxY4s9v/dDGpqN\u002B/eJ04E2w\u002B/njh7evh61Wy6nheR7pdBpLS0tboig\u002BzWazdSfBwIMQkZ2hm5Z3ZJqEemJYxBuWvGeVgHKGLCxY3W4Xo9EI7XYb29vbqNVqjVgs5iuVSk8ymcxXRkE7vPH8BDvj9uWJK/RSb1W/DROL6WNYngpCFkbQ1AF0XcdwOES5XEaxWEQkEtFmZmaqlHRNluVHu53yWLtUc9go4le/tD0c0aeiIk7HRShBDpxF4Bd4J9/v90HHhKZpaDabAg2dorYiSZJG/QO7xrWU6XETc1GCxQkRUZsMBizLZFk3dkkrlUqyUCjEWRge5h2cy8zNG2pvOTJ\u002BXPb5vLBMNxkhBB6PB\u002BFwGJOTk6DjotfrqfV6vUyJX9k1LkJFUeYNXV9OJpNyMBhk0d/gOA52PJFIIJVKIRQKgW5fbTQa5Y2NDYfQNbK9ycFgAMP4u5btDgVBQCAQcIzenSOjvXARmnREy6LKPgRchEeB/4SHh4vQ1pm9ZVVVHfnsZ3bdnxJziYi\u002BU4MWalSkO5ubmyz6b9iEnU5nx\u002B/3/2J1/dj5fP4C/VWuUVLF/qr2g/0MaRM9ai9WV1cfsvBRAvgJCFcAvZ0rbGoAAAAASUVORK5CYII=",
+              "WhenOpened": "2024-05-02T19:24:06.7Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI-SummerSchool\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "UI-SummerSchool\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI-SummerSchool\\MainWindow.xaml",
+              "RelativeToolTip": "UI-SummerSchool\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-05-02T19:24:06.704Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Form1.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI_Summerschool_Forms\\Form1.Designer.cs",
+              "RelativeDocumentMoniker": "UI_Summerschool_Forms\\Form1.Designer.cs",
+              "ToolTip": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI_Summerschool_Forms\\Form1.Designer.cs",
+              "RelativeToolTip": "UI_Summerschool_Forms\\Form1.Designer.cs",
+              "ViewState": "AQIAAB8AAAAAAAAAAAAswCoAAAA6AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-02T19:24:06.706Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI-SummerSchool\\App.xaml",
+              "RelativeDocumentMoniker": "UI-SummerSchool\\App.xaml",
+              "ToolTip": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI-SummerSchool\\App.xaml",
+              "RelativeToolTip": "UI-SummerSchool\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-05-02T19:24:06.707Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "App.config",
+              "DocumentMoniker": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI-SummerSchool\\App.config",
+              "RelativeDocumentMoniker": "UI-SummerSchool\\App.config",
+              "ToolTip": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI-SummerSchool\\App.config",
+              "RelativeToolTip": "UI-SummerSchool\\App.config",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALhSURBVDhPrVRNT1pBFL289/iyoqCkSYWEohIam5QYY8rCRVOpUneNjYsmdU9/QjdN1/0F7aZp2LrSxIWJGl2AUUG7In6RoISCH\u002BAClA\u002BBnjt9Wq3UatKTDO9xZ\u002Ba8M2fuvfS/oVGfFAgExkulkv/k5MRUrVbV6HXIskwul4t8Pt9Oc3Pz576\u002Bvpg6JaCoTyoUCt02m\u002B2Z0\u002Bm0NDU1qdGrwAdpb2\u002BPMpkMra\u002BvP\u002Bnq6qqvrKwE\u002B/v7o\u002BqS34RYrLS1tel7e3sNZrNZjV4F1FOtVqPNzU0eNoReVSqVGkjpnFTin3MoikIGg4FYYaNhNBpJq9XS2dkZ5XI5eWtry7a7uzt6fHz8tlgsPmKOK4T/gkajIZ1ORyaTSZCXy2UFFtj39/dH8ZEAr7kToV6vp56eHhobGxNjeHiY2tvbZdh1v16vd/OaC8KRkRHyeDzE/rEKvk1WdBkcs1qtgpQH33Zra6s6\u002BwuC8ODgYLClpeVxKpXSLy8vUywWo9PTU5Ik6Rop/\u002Bd4ozmGBLLnkOtF2jyIRqPy5OQkTU9PC9J8Pi8WNdr4N0gbGxvvYarRYrHswKMfQIVVLiwsiJy7KckbQZqdnR1cW1t7CrIkbi\u002BC28tns1laXV0VhJx3d1I4MzNDUOSbm5vzIFnv4egaJCsdHh6KI8OOuxFyTi0tLVEkEnkBRS\u002BTyaQZSSpMZ3V8ZCa9LaShoSFCDdPR0RGl02lBwhXDJPBWDFZ8W5USukbC6/UmOjo6EvAvgctJ4wNlLrHLl3NbUsVut39ghZygrNLtdj9E0r5GN3HH43FtKBQSagcGBsjhcIhN3HUYbM2fWcAd5pv6LhAMBh3oKkVUzDgqw7W9va2Ew2EN3usYVdhR5W7DYEI0CUJRlKC\u002BzLGL9nWOzs7OBPDF7/frsfkNPHXivw7HL\u002BAUcWxOTk1NCa\u002B5FGERl2AZhN95/42mgOjj/Pz8u8XFRSvSKIYa/zQxMfFVnW4Aop8NpGUNLA2uVgAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-05-02T19:24:06.71Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "UI-SummerSchool",
+              "DocumentMoniker": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI-SummerSchool\\UI-SummerSchool.csproj",
+              "RelativeDocumentMoniker": "UI-SummerSchool\\UI-SummerSchool.csproj",
+              "ToolTip": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\UI-SummerSchool\\UI-SummerSchool.csproj",
+              "RelativeToolTip": "UI-SummerSchool\\UI-SummerSchool.csproj",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKsSURBVDhPzZRLT9tAFIVP7BDHr8QOzbuUZ0UXLAgSQmKBkACJFeuuqigb4A8hdrSb9neUDYtsYEcEVZCqQCQgsfNw4uCYem4cVValCnZ81tia8dwz9/h6Bm\u002BeELsdHh5\u002B6Xa7C7Zth2n0lQiC4EiS9Ov4\u002BPgbCZZKpe/pdHozkUgI4fDrNB3HQaPRsOv1\u002BunJyclnirYsS52dndULhULUgya\u002BlH6/j/Pzc7taraqsz7HbcDiElzI0TUNcj0NURYTlMHiJR0SJQIkrUDUVUTVKjfUn5AnEtBjFiKJIGoyAP/fZRbPXxEX9Apf3l7AcC3k1j6XUEuSIjMpDBVyIw7Q2jbPfZ9ia20IykvSjRwQEH61HVDtVXDeuoUQUZNQMEmICpm2ifFtGuVb2LHFIykkS7w662Mhv\u002BNEjyPKY2/YtKo8VaFEN69Pr2J7bxmp\u002BFVk1Cz7Ewxk6eHKfMBgO4Dw79Bw\u002Bj6yOCQgafYMs52N55JQcYtEYWVUjKi0iRSTq66IOgRdoTAyLfvSIgCD7hq7rkq1QKOT9pPRXoe/00eg10LbbaNkt3Fv3NPZgPaD71KU5YwKC7LuxDGrtGuqdOsy\u002BiY7dAcdxSCkpsp5Tc5iJzyAlpzAVn0JMiPnRIwJFYQEtt4Wb5g1Ob07J6qQ0iQ/aB6xkV5CUklTltJzGfGIehWwBKqei5l1jAhlm5AyWM8u0MrN41biiQrFqskzW3q9RkdgCux93kVbSfuRfAoI8x1OWOws7KK2UcLB6gL1Pe1h8twhpQvJn/R8SZAXwth9M00TLaMFu23Atr0BeG3QG6JgdGE2D7dl/mmEYtP14nidBKmOxWPyRy\u002BU2dV0Xxi9eCttyzWbTvru7\u002B8kOBxLc398veqvM93q91x01Pt6BMlQU5fro6OirP/RmAf4A8\u002BgOfpADwKoAAAAASUVORK5CYII=",
+              "WhenOpened": "2023-11-07T16:25:10.998Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "SummerSchool-TEst",
+              "DocumentMoniker": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\SummerSchool-TEst\\SummerSchool-TEst.csproj",
+              "RelativeDocumentMoniker": "SummerSchool-TEst\\SummerSchool-TEst.csproj",
+              "ToolTip": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\SummerSchool-TEst\\SummerSchool-TEst.csproj",
+              "RelativeToolTip": "SummerSchool-TEst\\SummerSchool-TEst.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2023-11-07T16:06:52.566Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Backend-SC",
+              "DocumentMoniker": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\Backend-SC\\Backend-SC.csproj",
+              "RelativeDocumentMoniker": "Backend-SC\\Backend-SC.csproj",
+              "ToolTip": "C:\\Users\\laura\\OneDrive\\Documents\\Studium\\7. Semester\\Projekt\\Siemens Project\\in Arbeit\\SummerSchool-TEst\\SummerSchool-TEst\\Backend-SC\\Backend-SC.csproj",
+              "RelativeToolTip": "Backend-SC\\Backend-SC.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2023-11-07T16:06:35.52Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
