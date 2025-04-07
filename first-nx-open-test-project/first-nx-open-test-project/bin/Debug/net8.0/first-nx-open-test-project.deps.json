@@ -1,0 +1,109 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "first-nx-open-test-project/1.0.0": {
+        "dependencies": {
+          "Backend-SC": "1.0.0.0",
+          "NXOpen": "2027.0.0.0",
+          "NXOpen.Guide": "2412.0.0.0",
+          "NXOpen.UF": "2007.1700.0.0",
+          "NXOpen.Utilities": "2027.0.0.0",
+          "NXOpenUI": "2027.0.0.0"
+        },
+        "runtime": {
+          "first-nx-open-test-project.dll": {}
+        }
+      },
+      "Backend-SC/1.0.0.0": {
+        "runtime": {
+          "Backend-SC.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NXOpen/2027.0.0.0": {
+        "runtime": {
+          "NXOpen.dll": {
+            "assemblyVersion": "2027.0.0.0",
+            "fileVersion": "2027.0.0.0"
+          }
+        }
+      },
+      "NXOpen.Guide/2412.0.0.0": {
+        "runtime": {
+          "NXOpen.Guide.dll": {
+            "assemblyVersion": "2412.0.0.0",
+            "fileVersion": "2412.0.0.0"
+          }
+        }
+      },
+      "NXOpen.UF/2007.1700.0.0": {
+        "runtime": {
+          "NXOpen.UF.dll": {
+            "assemblyVersion": "2007.1700.0.0",
+            "fileVersion": "2007.1700.0.0"
+          }
+        }
+      },
+      "NXOpen.Utilities/2027.0.0.0": {
+        "runtime": {
+          "NXOpen.Utilities.dll": {
+            "assemblyVersion": "2027.0.0.0",
+            "fileVersion": "2027.0.0.0"
+          }
+        }
+      },
+      "NXOpenUI/2027.0.0.0": {
+        "runtime": {
+          "NXOpenUI.dll": {
+            "assemblyVersion": "2027.0.0.0",
+            "fileVersion": "2027.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "first-nx-open-test-project/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Backend-SC/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NXOpen/2027.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NXOpen.Guide/2412.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NXOpen.UF/2007.1700.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NXOpen.Utilities/2027.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NXOpenUI/2027.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

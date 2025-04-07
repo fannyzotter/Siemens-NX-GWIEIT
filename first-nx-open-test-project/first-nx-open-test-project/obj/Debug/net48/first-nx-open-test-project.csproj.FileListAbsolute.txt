@@ -1,0 +1,13 @@
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net48\first-nx-open-test-project.csproj.AssemblyReference.cache
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net48\first-nx-open-test-project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net48\first-nx-open-test-project.AssemblyInfoInputs.cache
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net48\first-nx-open-test-project.AssemblyInfo.cs
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net48\first-nx-open-test-project.csproj.CoreCompileInputs.cache
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net48\first-nx-open-test-project.sourcelink.json
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\bin\Debug\net48\first-nx-open-test-project.dll
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\bin\Debug\net48\first-nx-open-test-project.pdb
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\bin\Debug\net48\Backend-SC.dll
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\bin\Debug\net48\Backend-SC.pdb
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net48\first-nx.0C10FC23.Up2Date
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net48\first-nx-open-test-project.dll
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net48\first-nx-open-test-project.pdb

@@ -1,0 +1,16 @@
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\bin\Debug\net6.0\first-nx-open-test-project.deps.json
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\bin\Debug\net6.0\first-nx-open-test-project.dll
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\bin\Debug\net6.0\first-nx-open-test-project.pdb
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\bin\Debug\net6.0\Backend-SC.dll
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\bin\Debug\net6.0\Backend-SC.pdb
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net6.0\first-nx-open-test-project.csproj.AssemblyReference.cache
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net6.0\first-nx-open-test-project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net6.0\first-nx-open-test-project.AssemblyInfoInputs.cache
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net6.0\first-nx-open-test-project.AssemblyInfo.cs
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net6.0\first-nx-open-test-project.csproj.CoreCompileInputs.cache
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net6.0\first-nx-open-test-project.sourcelink.json
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net6.0\first-nx.0C10FC23.Up2Date
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net6.0\first-nx-open-test-project.dll
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net6.0\refint\first-nx-open-test-project.dll
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net6.0\first-nx-open-test-project.pdb
+C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\obj\Debug\net6.0\ref\first-nx-open-test-project.dll
