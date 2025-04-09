@@ -65,7 +65,11 @@ public class ShowCAMOperations
             theSession = Session.GetSession();
             theUI = UI.GetUI();
             // helps NX to find the dlx file
-            theDlxFileName = @"C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\ShowCAMOperations.dlx";
+            //theDlxFileName = @"C:\Users\HTW\source\repos\Siemens-NX-GWIEIT\first-nx-open-test-project\first-nx-open-test-project\ShowCAMOperations.dlx";
+            string dllDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            // dlx file is in the same directory as the dll (net48)
+            theDlxFileName = System.IO.Path.Combine(dllDir, "ShowCAMOperations.dlx");
+
             theDialog = theUI.CreateDialog(theDlxFileName);
             theDialog.AddApplyHandler(new NXOpen.BlockStyler.BlockDialog.Apply(apply_cb));
             theDialog.AddOkHandler(new NXOpen.BlockStyler.BlockDialog.Ok(ok_cb));

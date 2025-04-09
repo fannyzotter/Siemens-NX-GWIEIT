@@ -7,16 +7,16 @@
       "RelativeMoniker": "D:0:0:{478258BF-334F-4469-806F-E3BDC102B9BE}|first-nx-open-test-project\\first-nx-open-test-project.csproj|solutionrelative:first-nx-open-test-project\\showcamoperations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{478258BF-334F-4469-806F-E3BDC102B9BE}|first-nx-open-test-project\\first-nx-open-test-project.csproj|c:\\users\\htw\\source\\repos\\siemens-nx-gwieit\\first-nx-open-test-project\\first-nx-open-test-project\\first-nx-open-test-project.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{478258BF-334F-4469-806F-E3BDC102B9BE}|first-nx-open-test-project\\first-nx-open-test-project.csproj|solutionrelative:first-nx-open-test-project\\first-nx-open-test-project.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{478258BF-334F-4469-806F-E3BDC102B9BE}|first-nx-open-test-project\\first-nx-open-test-project.csproj|c:\\users\\htw\\source\\repos\\siemens-nx-gwieit\\first-nx-open-test-project\\first-nx-open-test-project\\first-nx-open-test-project.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{478258BF-334F-4469-806F-E3BDC102B9BE}|first-nx-open-test-project\\first-nx-open-test-project.csproj|solutionrelative:first-nx-open-test-project\\first-nx-open-test-project.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{478258BF-334F-4469-806F-E3BDC102B9BE}|first-nx-open-test-project\\first-nx-open-test-project.csproj|c:\\users\\htw\\source\\repos\\siemens-nx-gwieit\\first-nx-open-test-project\\first-nx-open-test-project\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{478258BF-334F-4469-806F-E3BDC102B9BE}|first-nx-open-test-project\\first-nx-open-test-project.csproj|solutionrelative:first-nx-open-test-project\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{478258BF-334F-4469-806F-E3BDC102B9BE}|first-nx-open-test-project\\first-nx-open-test-project.csproj|c:\\users\\htw\\source\\repos\\siemens-nx-gwieit\\first-nx-open-test-project\\first-nx-open-test-project\\first-nx-open-test-project.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
-      "RelativeMoniker": "D:0:0:{478258BF-334F-4469-806F-E3BDC102B9BE}|first-nx-open-test-project\\first-nx-open-test-project.csproj|solutionrelative:first-nx-open-test-project\\first-nx-open-test-project.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+      "AbsoluteMoniker": "D:0:0:{478258BF-334F-4469-806F-E3BDC102B9BE}|first-nx-open-test-project\\first-nx-open-test-project.csproj|c:\\users\\htw\\source\\repos\\siemens-nx-gwieit\\first-nx-open-test-project\\first-nx-open-test-project\\first-nx-open-test-project.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{478258BF-334F-4469-806F-E3BDC102B9BE}|first-nx-open-test-project\\first-nx-open-test-project.csproj|solutionrelative:first-nx-open-test-project\\first-nx-open-test-project.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,16 +42,16 @@
               "Title": "ShowCAMOperations.cs",
               "DocumentMoniker": "C:\\Users\\HTW\\source\\repos\\Siemens-NX-GWIEIT\\first-nx-open-test-project\\first-nx-open-test-project\\ShowCAMOperations.cs",
               "RelativeDocumentMoniker": "first-nx-open-test-project\\ShowCAMOperations.cs",
-              "ToolTip": "C:\\Users\\HTW\\source\\repos\\Siemens-NX-GWIEIT\\first-nx-open-test-project\\first-nx-open-test-project\\ShowCAMOperations.cs*",
-              "RelativeToolTip": "first-nx-open-test-project\\ShowCAMOperations.cs*",
-              "ViewState": "AgIAAOYAAAAAAAAAAAAAAOsAAAAJAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\HTW\\source\\repos\\Siemens-NX-GWIEIT\\first-nx-open-test-project\\first-nx-open-test-project\\ShowCAMOperations.cs",
+              "RelativeToolTip": "first-nx-open-test-project\\ShowCAMOperations.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAAawEMAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-07T18:39:08.888Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "first-nx-open-test-project.csproj",
               "DocumentMoniker": "C:\\Users\\HTW\\source\\repos\\Siemens-NX-GWIEIT\\first-nx-open-test-project\\first-nx-open-test-project\\first-nx-open-test-project.csproj",
               "RelativeDocumentMoniker": "first-nx-open-test-project\\first-nx-open-test-project.csproj",
@@ -64,7 +64,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "first-nx-open-test-project",
               "DocumentMoniker": "C:\\Users\\HTW\\source\\repos\\Siemens-NX-GWIEIT\\first-nx-open-test-project\\first-nx-open-test-project\\first-nx-open-test-project.csproj",
               "RelativeDocumentMoniker": "first-nx-open-test-project\\first-nx-open-test-project.csproj",
