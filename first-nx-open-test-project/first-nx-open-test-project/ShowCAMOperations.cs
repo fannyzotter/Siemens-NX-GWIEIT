@@ -37,6 +37,10 @@
 using System;
 using NXOpen;
 using NXOpen.BlockStyler;
+using NXOpen.Mechatronics;
+using NXOpen.Utilities;
+using NXOpen.CAM;
+
 
 //------------------------------------------------------------------------------
 //Represents Block Styler application class
@@ -220,7 +224,7 @@ public class ShowCAMOperations
             theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
         }
     }
-    
+
     //------------------------------------------------------------------------------
     //Callback Name: dialogShown_cb
     //This callback is executed just before the dialog launch. Thus any value set 
@@ -230,15 +234,49 @@ public class ShowCAMOperations
     {
         try
         {
-            //---- Enter your callback code here -----
+            Part workPart = theSession.Parts.Work;
+            if (workPart == null)
+            {
+                theUI.NXMessageBox.Show("Fehler", NXMessageBox.DialogType.Error, "Kein Part geladen.");
+                return;
+            }
+
+            NXOpen.CAM.CAMSetup camSetup = workPart.CAMSetup;
+            // Fix for CS7036: Provide the required argument "branch" to the GetRoot method.  
+            // The branch parameter specifies the view of the CAM setup.  
+            // Assuming the desired view is "ProgramOrder" (adjust if needed).  
+
+            NXOpen.CAM.NCGroup rootGroup = camSetup.GetRoot(CAMSetup.View.ProgramOrder);
+            var operationNames = new System.Collections.Generic.List<string>();
+
+            CollectOperationsRecursive(rootGroup, operationNames);
+
+            list_box0.SetListItems(operationNames.ToArray());
         }
         catch (Exception ex)
         {
-            //---- Enter your exception handling code here -----
             theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
         }
     }
-    
+
+    private void CollectOperationsRecursive(NXOpen.CAM.NCGroup group, System.Collections.Generic.List<string> operationNames)
+    {
+        foreach (TaggedObject obj in group.GetMembers())
+        {
+            if (obj is NXOpen.CAM.Operation operation)
+            {
+                operationNames.Add(operation.Name);
+            }
+            else if (obj is NXOpen.CAM.NCGroup subGroup)
+            {
+                CollectOperationsRecursive(subGroup, operationNames);
+            }
+        }
+    }
+
+
+
+
     //------------------------------------------------------------------------------
     //Callback Name: apply_cb
     //------------------------------------------------------------------------------
