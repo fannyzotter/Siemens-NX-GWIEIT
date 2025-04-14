@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("first-nx-open-test-project")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7aa59524c0247c024c7b30db039dad064befadc2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d890200170979b26471023656755f316abef61c0")]
 [assembly: System.Reflection.AssemblyProductAttribute("first-nx-open-test-project")]
 [assembly: System.Reflection.AssemblyTitleAttribute("first-nx-open-test-project")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
