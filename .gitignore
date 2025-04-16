@@ -1,1 +1,19 @@
+# Visual Studio files
 .vs/
+*.user
+*.suo
+*.VC.db
+*.VC.opendb
+*.ipch/
+*.log
+
+# Build results
+[Bb]in/
+[Oo]bj/
+*.exe
+*.pdb
+
+# Others
+*.cache
+*.ide
+*.ncb
