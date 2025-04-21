@@ -248,6 +248,26 @@ public class CamPmiUI
     {
         PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap);
         CamListBuilder.PopulateCamOperationList(cam_list_box);
+
+        // Warnung anzeigen, wenn keine PMI oder CAM-Operationen gefunden werden
+        bool noPMIsFound = pmi_list_box.GetListItems().Length == 0;
+        bool noCAMOpsFound = cam_list_box.GetListItems().Length == 0;
+
+        if (noPMIsFound && noCAMOpsFound)
+        {
+            theUI.NXMessageBox.Show("Hinweis", NXMessageBox.DialogType.Warning,
+                "Es wurden weder PMI-Objekte noch CAM-Operationen gefunden.");
+        }
+        else if (noPMIsFound)
+        {
+            theUI.NXMessageBox.Show("Hinweis", NXMessageBox.DialogType.Warning,
+                "Es wurden keine PMI-Objekte gefunden.");
+        }
+        else if (noCAMOpsFound)
+        {
+            theUI.NXMessageBox.Show("Hinweis", NXMessageBox.DialogType.Warning,
+                "Es wurden keine CAM-Operationen gefunden.");
+        }
     }
 
     //------------------------------------------------------------------------------

@@ -8,8 +8,10 @@ public static class CamListBuilder
 {
     public static void PopulateCamOperationList(ListBox listBox)
     {
-        try
-        {
+        // Clear the list box
+        listBox.SetListItems(new string[0]);
+
+       
             Session theSession = Session.GetSession();
             UI theUI = UI.GetUI();
             Part workPart = theSession.Parts.Work;
@@ -20,8 +22,25 @@ public static class CamListBuilder
                 return;
             }
 
-            CAMSetup camSetup = workPart.CAMSetup;
+        CAMSetup camSetup = null;
+        try
+        {
+            camSetup = workPart.CAMSetup;
+        }
+        catch (NXOpen.NXException)
+        {
+            // Kein CAM-Setup vorhanden → kein Fehler, einfach rausgehen
+            return;
+        }
+
+        try
+        {
             NCGroup rootGroup = camSetup.GetRoot(CAMSetup.View.ProgramOrder);
+
+            if (rootGroup == null)
+            {
+                return;
+            }
 
             List<string> operationNames = new List<string>();
             CollectOperationsRecursive(rootGroup, operationNames);
@@ -30,7 +49,7 @@ public static class CamListBuilder
         }
         catch (Exception ex)
         {
-            UI.GetUI().NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
+            UI.GetUI().NXMessageBox.Show("Block Styler Hinweis", NXMessageBox.DialogType.Error, ex.ToString());
         }
     }
 

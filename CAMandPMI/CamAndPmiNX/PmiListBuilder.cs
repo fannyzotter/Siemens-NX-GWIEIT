@@ -8,11 +8,23 @@ public static class PmiListBuilder
 {
     public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap)
     {
+
+        // Clear the list box
+        pmiMap.Clear();
+
         try
         {
             // Get the current session and work part
             NXOpen.Session theSession = NXOpen.Session.GetSession();
             NXOpen.Part workPart = theSession.Parts.Work;
+
+            // Check if the work part is null
+            if (workPart == null)
+            {
+                UI theUI = UI.GetUI();
+                theUI.NXMessageBox.Show("Error", NXMessageBox.DialogType.Error, "No part loaded.");
+                return;
+            }
 
             // Access the PMI Manager
             PmiManager pmiManager = workPart.PmiManager;
@@ -43,8 +55,13 @@ public static class PmiListBuilder
         }
         catch (Exception ex)
         {
+            if (ex.Message.Contains("PopulatePmiList"))
+            {
+                // Kein PMI = kein Problem
+                return;
+            }
             UI theUI = UI.GetUI();
-            theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
+            theUI.NXMessageBox.Show("Block Styler Hinweis", NXMessageBox.DialogType.Error, ex.ToString());
         }
     }
 
