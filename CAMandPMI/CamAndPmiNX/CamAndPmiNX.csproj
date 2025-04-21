@@ -6,23 +6,23 @@
 
   <ItemGroup>
     <Reference Include="NXOpen">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Siemens\NX2412\NXBIN\managed\NXOpen.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Apps\Siemens\NX\2412\NXBIN\managed\NXOpen.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NXOpen.Guide">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Siemens\NX2412\NXBIN\managed\NXOpen.Guide.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Apps\Siemens\NX\2412\NXBIN\managed\NXOpen.Guide.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NXOpen.UF">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Siemens\NX2412\NXBIN\managed\NXOpen.UF.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Apps\Siemens\NX\2412\NXBIN\managed\NXOpen.UF.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NXOpen.Utilities">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Siemens\NX2412\NXBIN\managed\NXOpen.Utilities.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Apps\Siemens\NX\2412\NXBIN\managed\NXOpen.Utilities.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NXOpenUI">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Siemens\NX2412\NXBIN\managed\NXOpenUI.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Apps\Siemens\NX\2412\NXBIN\managed\NXOpenUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
