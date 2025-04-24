@@ -11,16 +11,16 @@ public static class CamListBuilder
         // Clear the list box
         listBox.SetListItems(new string[0]);
 
-       
-            Session theSession = Session.GetSession();
-            UI theUI = UI.GetUI();
-            Part workPart = theSession.Parts.Work;
 
-            if (workPart == null)
-            {
-                theUI.NXMessageBox.Show("Fehler", NXMessageBox.DialogType.Error, "Kein Part geladen.");
-                return;
-            }
+        Session theSession = Session.GetSession();
+        UI theUI = UI.GetUI();
+        Part workPart = theSession.Parts.Work;
+
+        if (workPart == null)
+        {
+            theUI.NXMessageBox.Show("Error", NXMessageBox.DialogType.Error, "No part loaded.");
+            return;
+        }
 
         CAMSetup camSetup = null;
         try
@@ -49,7 +49,7 @@ public static class CamListBuilder
         }
         catch (Exception ex)
         {
-            UI.GetUI().NXMessageBox.Show("Block Styler Hinweis", NXMessageBox.DialogType.Error, ex.ToString());
+            UI.GetUI().NXMessageBox.Show("Block Styler Notice", NXMessageBox.DialogType.Error, ex.ToString());
         }
     }
 

@@ -61,7 +61,7 @@ public static class PmiListBuilder
                 return;
             }
             UI theUI = UI.GetUI();
-            theUI.NXMessageBox.Show("Block Styler Hinweis", NXMessageBox.DialogType.Error, ex.ToString());
+            theUI.NXMessageBox.Show("Block Styler Notice", NXMessageBox.DialogType.Error, ex.ToString());
         }
     }
 
