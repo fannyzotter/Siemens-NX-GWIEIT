@@ -217,7 +217,7 @@ public class CamPmiUI
         {
             group0 = (NXOpen.BlockStyler.Group)theDialog.TopBlock.FindBlock("group0");
             pmi_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("pmi_list_box");
-            pmi_list_box.SingleSelect = true; // added
+            pmi_list_box.SingleSelect = false; // added
             cam_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("cam_list_box");
             //------------------------------------------------------------------------------
             //Registration of ListBox specific callbacks
@@ -298,11 +298,13 @@ public class CamPmiUI
         {
             if (block == pmi_list_box)
             {
-                // added
-                var selectedPmi = PmiListBuilder.GetSelectedPmi(pmi_list_box, pmiMap);
-                if (selectedPmi != null)
+                // all selected PMIs
+                var selectedPmis = PmiListBuilder.GetSelectedPmis(pmi_list_box, pmiMap);
+
+                // highlight the selected surfaces
+                if (selectedPmis != null && selectedPmis.Count > 0)
                 {
-                    PmiHighlighter.ToggleHighlight(selectedPmi);
+                    PmiHighlighter.ToggleHighlights(selectedPmis);
                 }
             }
             else if (block == cam_list_box)

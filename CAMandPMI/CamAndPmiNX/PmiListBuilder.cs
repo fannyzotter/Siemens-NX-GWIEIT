@@ -81,4 +81,23 @@ public static class PmiListBuilder
 
         return null;
     }
+    public static List<NXOpen.Annotations.Pmi> GetSelectedPmis(NXOpen.BlockStyler.ListBox listBox, Dictionary<string, NXOpen.Annotations.Pmi> pmiMap)
+    {
+        var selectedItems = listBox.GetSelectedItemStrings();
+        var selectedPmis = new List<NXOpen.Annotations.Pmi>();
+
+        if (selectedItems == null || selectedItems.Length == 0)
+            return selectedPmis;
+
+        foreach (var selectedText in selectedItems)
+        {
+            string key = selectedText.Split('-')[0].Trim();
+            if (pmiMap.TryGetValue(key, out var pmi))
+            {
+                selectedPmis.Add(pmi);
+            }
+        }
+
+        return selectedPmis;
+    }
 }

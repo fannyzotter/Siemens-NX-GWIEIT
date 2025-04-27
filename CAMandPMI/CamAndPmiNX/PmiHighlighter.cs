@@ -1,39 +1,50 @@
-﻿using NXOpen;
+﻿using System.Collections.Generic;
+using NXOpen;
 using NXOpen.Annotations;
 using NXOpen.UF;
 
 
 public static class PmiHighlighter
 {
-    private static NXOpen.Annotations.Pmi highlightedPMI;
-    private static NXObject highlightedObject;
+    private static List<NXOpen.Annotations.Pmi> highlightedPMIs = new List<NXOpen.Annotations.Pmi>();
+    private static List<NXObject> highlightedObjects = new List<NXObject>();
     private static UFSession ufSession = UFSession.GetUFSession();
 
-    public static void ToggleHighlight(NXOpen.Annotations.Pmi selectedPmi)
+    public static void ToggleHighlights(List<NXOpen.Annotations.Pmi> pmiList)
     {
-        if (highlightedPMI != null || highlightedPMI == selectedPmi)
-        {
-            ufSession.Disp.SetHighlight(highlightedPMI.Tag, 0);
-            highlightedPMI = null;
-        }
-        else
-        {
-            ufSession.Disp.SetHighlight(selectedPmi.Tag, 1);
-            highlightedPMI = selectedPmi;
-        }
+        ClearHighlights();
 
-        AssociatedObject assObject = selectedPmi.GetAssociatedObject();
-        NXObject objekt = assObject.GetObjects()[0];
+        foreach (var pmi in pmiList)
+        {
+            if (pmi == null) continue;
+            // highlights the PMI in the list
+            ufSession.Disp.SetHighlight(pmi.Tag, 1);
+            highlightedPMIs.Add(pmi);
 
-        if (highlightedObject != null || highlightedObject == objekt)
-        {
-            ufSession.Disp.SetHighlight(highlightedObject.Tag, 0);
-            highlightedObject = null;
+            // highlights the associated object
+            AssociatedObject associatedObject = pmi.GetAssociatedObject();
+            if (associatedObject == null) continue;
+            NXObject[] objects = associatedObject.GetObjects();
+            if (objects == null || objects.Length == 0) continue;
+            foreach (var obj in objects)
+            {
+                if (obj == null) continue;
+                ufSession.Disp.SetHighlight(obj.Tag, 1);
+                highlightedObjects.Add(obj);
+            }
         }
-        else
+    }
+    public static void ClearHighlights()
+    {
+        foreach (var pmi in highlightedPMIs)
         {
-            ufSession.Disp.SetHighlight(objekt.Tag, 1);
-            highlightedObject = objekt;
+            ufSession.Disp.SetHighlight(pmi.Tag, 0);
         }
+        highlightedPMIs.Clear();
+        foreach (var obj in highlightedObjects)
+        {
+            ufSession.Disp.SetHighlight(obj.Tag, 0);
+        }
+        highlightedObjects.Clear();
     }
 }
