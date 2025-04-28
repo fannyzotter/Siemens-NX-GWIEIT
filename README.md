@@ -1,4 +1,4 @@
-# Siemens-NX_GWIEIT
+# Siemens-NX-GWIEIT
 
 ## Installation and Usage Instructions
 
