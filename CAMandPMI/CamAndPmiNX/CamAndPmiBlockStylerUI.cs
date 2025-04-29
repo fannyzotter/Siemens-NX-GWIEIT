@@ -59,6 +59,8 @@ public class CamPmiUI
     private Dictionary<string, Pmi> pmiMap = new Dictionary<string, Pmi>();
     private Pmi highlightedPMI;
     private NXObject highlightedObject;
+    private NXObject selectedObject;
+
 
     //------------------------------------------------------------------------------
     //Constructor for NX Styler class
@@ -80,6 +82,8 @@ public class CamPmiUI
             theDialog.AddUpdateHandler(new NXOpen.BlockStyler.BlockDialog.Update(update_cb));
             theDialog.AddInitializeHandler(new NXOpen.BlockStyler.BlockDialog.Initialize(initialize_cb));
             theDialog.AddDialogShownHandler(new NXOpen.BlockStyler.BlockDialog.DialogShown(dialogShown_cb));
+            theDialog.Show(BlockDialog.DialogMode.Create);
+
         }
         catch (Exception ex)
         {
