@@ -36,10 +36,9 @@ public static class CamListBuilder
             List<string> operationNames = new List<string>();
             CollectOperationsRecursive(rootGroup, operationNames);
 
-            List<string> geometryNames = new List<string>();
-            CollectGeometriesRecursive(rootGroupGeom, geometryNames);
+            CollectGeometriesRecursive(rootGroupGeom, operationNames);
 
-            listBox.SetListItems(geometryNames.ToArray());
+            listBox.SetListItems(operationNames.ToArray());
 
 
         }
@@ -59,6 +58,7 @@ public static class CamListBuilder
             }
             else if (obj is NXOpen.CAM.NCGroup subGroup)
             {
+                operationNames.Add(subGroup.Name);
                 CollectOperationsRecursive(subGroup, operationNames);
             }
         }
@@ -73,6 +73,11 @@ public static class CamListBuilder
                 CAMFeature[] features = geometry.GetFeatures();
                 foreach (CAMFeature feature in features)
                 {
+                    NXOpen.CAM.Operation[] operation = feature.GetOperations();
+                    foreach (NXOpen.CAM.Operation op in operation)
+                    {
+                        geomName.Add(op.Name);
+                    }
                     Face[] face = feature.GetFaces();
                     foreach (Face f in face)
                     {
@@ -89,6 +94,7 @@ public static class CamListBuilder
             }
             else if (obj is NXOpen.CAM.NCGroup subGroup)
             {
+                geomName.Add(subGroup.Name);
                 CollectGeometriesRecursive(subGroup, geomName);
             }
         }
