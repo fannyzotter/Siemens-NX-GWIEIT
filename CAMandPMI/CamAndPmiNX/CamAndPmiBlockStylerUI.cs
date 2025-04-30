@@ -55,11 +55,11 @@ public class CamPmiUI
     private static UI theUI = null;
     private string theDlxFileName;
     private NXOpen.BlockStyler.BlockDialog theDialog;
-    private NXOpen.BlockStyler.Group group0;
+    private NXOpen.BlockStyler.ScrolledWindow scrolledWindow;// Block type: Scrolled Window
     private NXOpen.BlockStyler.ListBox pmi_list_box;// Block type: List Box
     private NXOpen.BlockStyler.ListBox cam_list_box;// Block type: List Box
     private NXOpen.BlockStyler.ListBox list_box_connected_cam;// Block type: List Box
-    private NXOpen.BlockStyler.Toggle toggleCamPmi;// Block type: Toggle
+    //private NXOpen.BlockStyler.Toggle toggleCamPmi;// Block type: Toggle
 
     // Added
     private Dictionary<string, Pmi> pmiMap = new Dictionary<string, Pmi>();
@@ -68,8 +68,7 @@ public class CamPmiUI
     private Dictionary<string, NXOpen.CAM.Operation> camMap = new Dictionary<string, NXOpen.CAM.Operation>();
     private Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap = new Dictionary<NXOpen.CAM.Operation, List<Face>>();
 
-    private List<NXOpen.Face> PmiFaces = new List<Face>();
-    private List<NXOpen.Face> CamFaces = new List<Face>();
+    private List<NXOpen.CAM.Operation> connectedCamList = new List<NXOpen.CAM.Operation>();
 
     private NXOpen.CAM.Operation highlightedOperation;
 
@@ -103,7 +102,6 @@ public class CamPmiUI
             theDialog.AddUpdateHandler(new NXOpen.BlockStyler.BlockDialog.Update(update_cb));
             theDialog.AddInitializeHandler(new NXOpen.BlockStyler.BlockDialog.Initialize(initialize_cb));
             theDialog.AddDialogShownHandler(new NXOpen.BlockStyler.BlockDialog.DialogShown(dialogShown_cb));
-            theDialog.Show(BlockDialog.DialogMode.Create);
 
         }
         catch (Exception ex)
@@ -112,52 +110,8 @@ public class CamPmiUI
             theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
         }
     }
-    //------------------------------- DIALOG LAUNCHING ---------------------------------
-    //
-    //    Before invoking this application one needs to open any part/empty part in NX
-    //    because of the behavior of the blocks.
-    //
-    //    Make sure the dlx file is in one of the following locations:
-    //        1.) From where NX session is launched
-    //        2.) $UGII_USER_DIR/application
-    //        3.) For released applications, using UGII_CUSTOM_DIRECTORY_FILE is highly
-    //            recommended. This variable is set to a full directory path to a file 
-    //            containing a list of root directories for all custom applications.
-    //            e.g., UGII_CUSTOM_DIRECTORY_FILE=$UGII_BASE_DIR\ugii\menus\custom_dirs.dat
-    //
-    //    You can create the dialog using one of the following way:
-    //
-    //    1. Journal Replay
-    //
-    //        1) Replay this file through Tool->Journal->Play Menu.
-    //
-    //    2. USER EXIT
-    //
-    //        1) Create the Shared Library -- Refer "Block UI Styler programmer's guide"
-    //        2) Invoke the Shared Library through File->Execute->NX Open menu.
-    //
-    //------------------------------------------------------------------------------
-    public static void Main()
-    {
-        CamPmiUI thepmicam1 = null;
-        try
-        {
-            thepmicam1 = new CamPmiUI();
-            // The following method shows the dialog immediately
-            thepmicam1.Launch();
-        }
-        catch (Exception ex)
-        {
-            //---- Enter your exception handling code here -----
-            theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
-        }
-        finally
-        {
-            if (thepmicam1 != null)
-                thepmicam1.Dispose();
-            thepmicam1 = null;
-        }
-    }
+
+   
     //------------------------------------------------------------------------------
     // This method specifies how a shared image is unloaded from memory
     // within NX. This method gives you the capability to unload an
@@ -242,12 +196,11 @@ public class CamPmiUI
     {
         try
         {
-            group0 = (NXOpen.BlockStyler.Group)theDialog.TopBlock.FindBlock("group0");
-            pmi_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("pmi_list_box");
-            pmi_list_box.SingleSelect = true; // added
-            cam_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("cam_list_box");
+            scrolledWindow = (NXOpen.BlockStyler.ScrolledWindow)theDialog.TopBlock.FindBlock("scrolledWindow");
+            pmi_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("pmi_list_box"); 
             list_box_connected_cam = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("list_box_connected_cam");
-            toggleCamPmi = (NXOpen.BlockStyler.Toggle)theDialog.TopBlock.FindBlock("toggleCamPmi");
+            cam_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("cam_list_box");
+            //toggleCamPmi = (NXOpen.BlockStyler.Toggle)theDialog.TopBlock.FindBlock("toggleCamPmi");
             //------------------------------------------------------------------------------
             //Registration of ListBox specific callbacks
             //------------------------------------------------------------------------------
@@ -281,29 +234,6 @@ public class CamPmiUI
         CamListBuilder.PopulateCamWithFaces(camSetup, camMap, camOperationFaceMap);
 
     }
-
-    //  function to check if all pmi faces are at least once in cam faces
-    public bool CheckPmiFacesInCamFaces()
-    {
-        foreach (var pmiFace in PmiFaces)
-        {
-            bool found = false;
-            foreach (var camFace in CamFaces)
-            {
-                if (pmiFace == camFace)
-                {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     //------------------------------------------------------------------------------
     //Callback Name: apply_cb
@@ -340,9 +270,10 @@ public class CamPmiUI
                 if (selectedPmi != null)
                 {
                     PmiHighlighter.ToggleHighlight(selectedPmi);
-                    List<NXOpen.CAM.Operation> connectedCamList = CamListBuilder.ComparePmiAndCamFaces(selectedPmi, pmiFaceMap, camOperationFaceMap);
+                    CamListBuilder.ComparePmiAndCamFaces(selectedPmi, pmiFaceMap, camOperationFaceMap, connectedCamList);
+
                     CamListBuilder.PopulateConnectedCamList(list_box_connected_cam, camMap, connectedCamList);
-                    CamHighlighter.SelectMatchingOperations(pmi_list_box, connectedCamList, camMap);
+                    //CamHighlighter.SelectconnectedCam(pmi_list_box, connectedCamList, camMap);
                 }
             }
             else if (block == cam_list_box)

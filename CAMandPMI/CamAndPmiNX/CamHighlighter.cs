@@ -54,15 +54,15 @@ public static class CamHighlighter
 
 
     // function that selects the strings in the listbox of all the matching operations
-    public static void SelectMatchingOperations(ListBox listBox, List<NXOpen.CAM.Operation> matchingOperations, Dictionary<string, NXOpen.CAM.Operation> camMap)
+    public static void SelectconnectedCam(ListBox listBox, List<NXOpen.CAM.Operation> connectedCam, Dictionary<string, NXOpen.CAM.Operation> camMap)
     {
         string[] selectedItems = null;
-        if (matchingOperations == null || matchingOperations.Count == 0)
+        if (connectedCam == null || connectedCam.Count == 0)
         {
             return;
         }
 
-        foreach (var operation in matchingOperations)
+        foreach (var operation in connectedCam)
         {
             foreach (var kvp in camMap)
             {

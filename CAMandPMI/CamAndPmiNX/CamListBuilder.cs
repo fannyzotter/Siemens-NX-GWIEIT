@@ -35,17 +35,28 @@ public static class CamListBuilder
     // populate the listbox with selected cam operations
     public static void PopulateConnectedCamList(ListBox listBox, Dictionary<string, NXOpen.CAM.Operation> camMap, List<NXOpen.CAM.Operation> connectedCam)
     {
-        listBox.SetListItems(null);
         List<string> operationNames = new List<string>();
-        foreach (var camOperation in connectedCam)
+        string debugText = "Connected CAM Ops:\n";
+
+        try
         {
-            string key = camOperation.Name;
-            if (camMap.TryGetValue(key, out var operation))
+            if (connectedCam == null) return;
+
+            foreach (var camOperation in connectedCam)
             {
-                operationNames.Add(operation.Name);
+                debugText += $"- {camOperation.Name}\n";
+
+                if (camMap.TryGetValue(camOperation.Name, out var operation))
+                {
+                    operationNames.Add(operation.Name);
+                }
             }
+            listBox.SetListItems(operationNames.ToArray());
         }
-        listBox.SetListItems(operationNames.ToArray());
+        catch (Exception ex)
+        {
+            UI.GetUI().NXMessageBox.Show("Exception", NXMessageBox.DialogType.Error, ex.Message);
+        }
     }
 
     private static void CollectOperationsRecursive(NXOpen.CAM.NCGroup group, System.Collections.Generic.List<string> operationNames, Dictionary<string, NXOpen.CAM.Operation> camMap)
@@ -126,18 +137,21 @@ public static class CamListBuilder
     }
 
     // Function that compares PMI and Cam faces and returns a list of Cam operations that are associated with the same faces
-    public static List<NXOpen.CAM.Operation> ComparePmiAndCamFaces(Pmi selectedPmi, Dictionary<Pmi, List<Face>> pmiFaceMap, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap)
+    public static void ComparePmiAndCamFaces(Pmi selectedPmi, Dictionary<Pmi, List<Face>> pmiFaceMap, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap, List<Operation> connectedCam)
     {
-        List<NXOpen.CAM.Operation> matchingOperations = new List<NXOpen.CAM.Operation>();
+        connectedCam.Clear();
+
         List<Face> selectedFaces = new List<Face>();
 
-        if (selectedPmi == null)
+        if (selectedPmi == null || !pmiFaceMap.ContainsKey(selectedPmi))
         {
-            selectedFaces = pmiFaceMap[selectedPmi];
-            if (selectedFaces == null || selectedFaces.Count == 0)
-            {
-                return matchingOperations;
-            }
+            return;
+        }
+
+        selectedFaces = pmiFaceMap[selectedPmi];
+        if (selectedFaces == null || selectedFaces.Count == 0)
+        {
+            return;
         }
 
         foreach (var camEntry in camOperationFaceMap)
@@ -149,12 +163,12 @@ public static class CamListBuilder
             {
                 if (camFaces.Contains(face))
                 {
-                    matchingOperations.Add(camOperation);
+                    connectedCam.Add(camOperation);
                     break; // No need to check further for this operation
                 }
             }
         }
-        return matchingOperations;
+        return;
     }
 
 }
