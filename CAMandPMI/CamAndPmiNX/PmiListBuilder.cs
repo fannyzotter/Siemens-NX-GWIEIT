@@ -6,7 +6,7 @@ using NXOpen.BlockStyler;
 
 public static class PmiListBuilder
 {
-    public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap)
+    public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap, Dictionary<Pmi, List<Face>> pmiFaceMap)
     {
         try
         {
@@ -27,6 +27,9 @@ public static class PmiListBuilder
             // Iterate over each PMI attribute and extract the PMI name
             foreach (NXOpen.Annotations.Pmi pmi in pmis)
             {
+                AssociatedObject assObject = pmi.GetAssociatedObject();
+                NXObject[] objekt = assObject.GetObjects();
+
                 string pmiType = pmi.Type.ToString();
                 string pmiIndex = pmi.Index.ToString();
                 string pmiName = pmi.Name;
@@ -36,6 +39,19 @@ public static class PmiListBuilder
                 string displayText = $"{key} - {pmiType} ({pmiIndex}) \"{pmiName}\"";
 
                 pmiNames.Add(displayText);
+
+                List<Face> faces = new List<Face>();
+                foreach (NXObject nxobj in objekt)
+                {
+                    if (nxobj is Face objface)
+                    {
+                        faces.Add(objface);
+                    }
+                }
+                if (!pmiFaceMap.ContainsKey(pmi))
+                {
+                    pmiFaceMap[pmi] = faces;
+                }
                 pmiMap[key] = pmi;
             }
             // Clear any previous entries in the list box
@@ -51,6 +67,7 @@ public static class PmiListBuilder
     public static NXOpen.Annotations.Pmi GetSelectedPmi(ListBox listBox, Dictionary<string, NXOpen.Annotations.Pmi> pmiMap)
     {
         string[] selectedItems = listBox.GetSelectedItemStrings();
+        listBox.SetSelectedItemStrings(selectedItems); // Set the selected items again to ensure they are highlighted
         if (selectedItems == null || selectedItems.Length == 0)
             return null;
 

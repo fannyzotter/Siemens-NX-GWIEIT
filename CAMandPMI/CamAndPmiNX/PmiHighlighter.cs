@@ -1,39 +1,55 @@
 ﻿using NXOpen;
 using NXOpen.Annotations;
 using NXOpen.UF;
+using System.Collections.Generic;
+using System.Linq;
 
 
 public static class PmiHighlighter
 {
     private static NXOpen.Annotations.Pmi highlightedPMI;
-    private static NXObject highlightedObject;
+    private static List<Face> highlightedFaces = new List<Face>();
     private static UFSession ufSession = UFSession.GetUFSession();
 
     public static void ToggleHighlight(NXOpen.Annotations.Pmi selectedPmi)
     {
-        if (highlightedPMI != null || highlightedPMI == selectedPmi)
+        foreach (Face obj in highlightedFaces)
         {
-            ufSession.Disp.SetHighlight(highlightedPMI.Tag, 0);
-            highlightedPMI = null;
+            ufSession.Disp.SetHighlight(obj.Tag, 0);
         }
-        else
-        {
-            ufSession.Disp.SetHighlight(selectedPmi.Tag, 1);
-            highlightedPMI = selectedPmi;
-        }
+        highlightedFaces.Clear();
 
         AssociatedObject assObject = selectedPmi.GetAssociatedObject();
-        NXObject objekt = assObject.GetObjects()[0];
+        NXObject[] objekts = assObject.GetObjects();
 
-        if (highlightedObject != null || highlightedObject == objekt)
+        foreach (NXObject obj in objekts)
         {
-            ufSession.Disp.SetHighlight(highlightedObject.Tag, 0);
-            highlightedObject = null;
+            if (obj is Face face)
+            {
+                if (highlightedFaces.Contains(face))
+                {
+                    ufSession.Disp.SetHighlight(face.Tag, 0);
+                    highlightedFaces.Remove(face);
+                }
+                else
+                {
+                    ufSession.Disp.SetHighlight(face.Tag, 1);
+                    highlightedFaces.Add(face);
+                }
+            }
         }
-        else
+    }
+
+
+    public static void ClearPmiHighlight(Dictionary<Pmi, List<Face>> pmiFaceMap)
+    {
+        foreach (var kvp in pmiFaceMap)
         {
-            ufSession.Disp.SetHighlight(objekt.Tag, 1);
-            highlightedObject = objekt;
+            foreach (var face in kvp.Value)
+            {
+                ufSession.Disp.SetHighlight(face.Tag, 0);
+            }
         }
+        highlightedFaces.Clear();
     }
 }

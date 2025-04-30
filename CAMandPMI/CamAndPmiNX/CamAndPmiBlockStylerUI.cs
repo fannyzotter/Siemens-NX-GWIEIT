@@ -39,7 +39,11 @@ using System.Collections.Generic;
 using NXOpen;
 using NXOpen.BlockStyler;
 using NXOpen.Annotations;
+using NXOpen.CAM;
+using NXOpen.Features;
+using NXOpen.Mechatronics;
 using static System.Collections.Specialized.BitVector32;
+using Operation = NXOpen.CAM.Operation;
 
 //------------------------------------------------------------------------------
 //Represents Block Styler application class
@@ -54,13 +58,29 @@ public class CamPmiUI
     private NXOpen.BlockStyler.Group group0;
     private NXOpen.BlockStyler.ListBox pmi_list_box;// Block type: List Box
     private NXOpen.BlockStyler.ListBox cam_list_box;// Block type: List Box
+    private NXOpen.BlockStyler.ListBox list_box_connected_cam;// Block type: List Box
+    private NXOpen.BlockStyler.Toggle toggleCamPmi;// Block type: Toggle
 
     // Added
     private Dictionary<string, Pmi> pmiMap = new Dictionary<string, Pmi>();
+    private Dictionary<Pmi, List<Face>> pmiFaceMap = new Dictionary<Pmi, List<Face>>();
+
+    private Dictionary<string, NXOpen.CAM.Operation> camMap = new Dictionary<string, NXOpen.CAM.Operation>();
+    private Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap = new Dictionary<NXOpen.CAM.Operation, List<Face>>();
+
+    private List<NXOpen.Face> PmiFaces = new List<Face>();
+    private List<NXOpen.Face> CamFaces = new List<Face>();
+
+    private NXOpen.CAM.Operation highlightedOperation;
+
     private Pmi highlightedPMI;
     private NXObject highlightedObject;
     private NXObject selectedObject;
 
+    private Feature highlightedFeature;
+    private NXOpen.CAM.Operation selectedCam;
+    private NCGroup camGroup;
+    private CAMSetup camSetup;
 
     //------------------------------------------------------------------------------
     //Constructor for NX Styler class
@@ -72,9 +92,10 @@ public class CamPmiUI
             theSession = Session.GetSession();
             theUI = UI.GetUI();
 
+            camSetup = theSession.Parts.Work.CAMSetup;
 
             string dllDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            theDlxFileName = System.IO.Path.Combine(dllDir, "pmi-cam-1.dlx");
+            theDlxFileName = System.IO.Path.Combine(dllDir, "pmi-cam-2.dlx");
 
             theDialog = theUI.CreateDialog(theDlxFileName);
             theDialog.AddApplyHandler(new NXOpen.BlockStyler.BlockDialog.Apply(apply_cb));
@@ -203,6 +224,8 @@ public class CamPmiUI
     {
         if (theDialog != null)
         {
+            CamHighlighter.ClearCamHighlight(camOperationFaceMap);
+            PmiHighlighter.ClearPmiHighlight(pmiFaceMap);
             theDialog.Dispose();
             theDialog = null;
         }
@@ -223,6 +246,8 @@ public class CamPmiUI
             pmi_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("pmi_list_box");
             pmi_list_box.SingleSelect = true; // added
             cam_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("cam_list_box");
+            list_box_connected_cam = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("list_box_connected_cam");
+            toggleCamPmi = (NXOpen.BlockStyler.Toggle)theDialog.TopBlock.FindBlock("toggleCamPmi");
             //------------------------------------------------------------------------------
             //Registration of ListBox specific callbacks
             //------------------------------------------------------------------------------
@@ -250,9 +275,35 @@ public class CamPmiUI
     //------------------------------------------------------------------------------
     public void dialogShown_cb()
     {
-        PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap);
-        CamListBuilder.PopulateCamOperationList(cam_list_box);
+        PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiFaceMap);
+        
+        CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup);
+        CamListBuilder.PopulateCamWithFaces(camSetup, camMap, camOperationFaceMap);
+
     }
+
+    //  function to check if all pmi faces are at least once in cam faces
+    public bool CheckPmiFacesInCamFaces()
+    {
+        foreach (var pmiFace in PmiFaces)
+        {
+            bool found = false;
+            foreach (var camFace in CamFaces)
+            {
+                if (pmiFace == camFace)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     //------------------------------------------------------------------------------
     //Callback Name: apply_cb
@@ -262,6 +313,8 @@ public class CamPmiUI
         int errorCode = 0;
         try
         {
+            CamHighlighter.ClearCamHighlight(camOperationFaceMap);
+            PmiHighlighter.ClearPmiHighlight(pmiFaceMap);
             //---- Enter your callback code here -----
         }
         catch (Exception ex)
@@ -287,11 +340,18 @@ public class CamPmiUI
                 if (selectedPmi != null)
                 {
                     PmiHighlighter.ToggleHighlight(selectedPmi);
+                    List<NXOpen.CAM.Operation> connectedCamList = CamListBuilder.ComparePmiAndCamFaces(selectedPmi, pmiFaceMap, camOperationFaceMap);
+                    CamListBuilder.PopulateConnectedCamList(list_box_connected_cam, camMap, connectedCamList);
+                    CamHighlighter.SelectMatchingOperations(pmi_list_box, connectedCamList, camMap);
                 }
             }
             else if (block == cam_list_box)
             {
-                //---------Enter your code here-----------
+                var selectedCam = CamListBuilder.GetSelectedCam(cam_list_box, camMap);
+                if (selectedCam != null)
+                {
+                    CamHighlighter.SetCamHighlight(selectedCam, camOperationFaceMap);
+                }
             }
         }
         catch (Exception ex)
@@ -311,6 +371,8 @@ public class CamPmiUI
         try
         {
             errorCode = apply_cb();
+            CamHighlighter.ClearCamHighlight(camOperationFaceMap);
+            PmiHighlighter.ClearPmiHighlight(pmiFaceMap);
             //---- Enter your callback code here -----
         }
         catch (Exception ex)
