@@ -6,45 +6,29 @@ using NXOpen.UF;
 
 public static class PmiHighlighter
 {
-    private static List<NXOpen.Annotations.Pmi> highlightedPMIs = new List<NXOpen.Annotations.Pmi>();
-    private static List<NXObject> highlightedObjects = new List<NXObject>();
+
+    private static NXOpen.Annotations.Pmi highlightedPMI;
     private static UFSession ufSession = UFSession.GetUFSession();
 
-    public static void ToggleHighlights(List<NXOpen.Annotations.Pmi> pmiList)
-    {
-        ClearHighlights();
+    private static List<NXObject> highlightedObjects = new List<NXObject>();
+    
 
-        foreach (var pmi in pmiList)
-        {
-            if (pmi == null) continue;
-            // highlights the PMI in the list
-            ufSession.Disp.SetHighlight(pmi.Tag, 1);
-            highlightedPMIs.Add(pmi);
+    public static void ToggleHighlight(NXOpen.Annotations.Pmi selectedPmi)
+    {        
+        AssociatedObject assObject = selectedPmi.GetAssociatedObject();
+        NXObject highlightedObject = assObject.GetObjects()[0];
 
-            // highlights the associated object
-            AssociatedObject associatedObject = pmi.GetAssociatedObject();
-            if (associatedObject == null) continue;
-            NXObject[] objects = associatedObject.GetObjects();
-            if (objects == null || objects.Length == 0) continue;
-            foreach (var obj in objects)
-            {
-                if (obj == null) continue;
-                ufSession.Disp.SetHighlight(obj.Tag, 1);
-                highlightedObjects.Add(obj);
-            }
-        }
-    }
-    public static void ClearHighlights()
-    {
-        foreach (var pmi in highlightedPMIs)
+        // if the highlighted object is already highlighted, remove the highlight
+        if (highlightedObjects.Contains(highlightedObject))
         {
-            ufSession.Disp.SetHighlight(pmi.Tag, 0);
+            ufSession.Disp.SetHighlight(highlightedObject.Tag, 0);
+            highlightedObjects.Remove(highlightedObject);
         }
-        highlightedPMIs.Clear();
-        foreach (var obj in highlightedObjects)
+        // if the highlighted object is not highlighted, add the highlight
+        else
         {
-            ufSession.Disp.SetHighlight(obj.Tag, 0);
+            ufSession.Disp.SetHighlight(highlightedObject.Tag, 1);
+            highlightedObjects.Add(highlightedObject);
         }
-        highlightedObjects.Clear();
     }
 }

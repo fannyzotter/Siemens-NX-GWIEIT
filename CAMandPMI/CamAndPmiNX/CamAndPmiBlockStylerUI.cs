@@ -39,7 +39,6 @@ using System.Collections.Generic;
 using NXOpen;
 using NXOpen.BlockStyler;
 using NXOpen.Annotations;
-using static System.Collections.Specialized.BitVector32;
 
 //------------------------------------------------------------------------------
 //Represents Block Styler application class
@@ -59,6 +58,7 @@ public class CamPmiUI
     private Dictionary<string, Pmi> pmiMap = new Dictionary<string, Pmi>();
     private Pmi highlightedPMI;
     private NXObject highlightedObject;
+    private Dictionary<string, bool> pmiState = new Dictionary<string, bool>();
 
     //------------------------------------------------------------------------------
     //Constructor for NX Styler class
@@ -217,8 +217,11 @@ public class CamPmiUI
         {
             group0 = (NXOpen.BlockStyler.Group)theDialog.TopBlock.FindBlock("group0");
             pmi_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("pmi_list_box");
-            pmi_list_box.SingleSelect = false; // added
+            pmi_list_box.SingleSelect = true;
             cam_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("cam_list_box");
+
+      
+
             //------------------------------------------------------------------------------
             //Registration of ListBox specific callbacks
             //------------------------------------------------------------------------------
@@ -246,10 +249,21 @@ public class CamPmiUI
     //------------------------------------------------------------------------------
     public void dialogShown_cb()
     {
-        PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap);
+        // initialize pmiMap
+        pmiMap = PmiListBuilder.CreatePmiMap();
+
+        // initialize pmiStates: in the beginning all PMIs are not selected
+        foreach (var key in pmiMap.Keys)
+        {
+            pmiState[key] = false;
+        }
+
+        // populate the list box with PMIs
+        PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState);
+
         CamListBuilder.PopulateCamOperationList(cam_list_box);
 
-        // Warnung anzeigen, wenn keine PMI oder CAM-Operationen gefunden werden
+        // error message if no PMIs or CAM operations are found
         bool noPMIsFound = pmi_list_box.GetListItems().Length == 0;
         bool noCAMOpsFound = cam_list_box.GetListItems().Length == 0;
 
@@ -298,13 +312,18 @@ public class CamPmiUI
         {
             if (block == pmi_list_box)
             {
-                // all selected PMIs
-                var selectedPmis = PmiListBuilder.GetSelectedPmis(pmi_list_box, pmiMap);
-
-                // highlight the selected surfaces
-                if (selectedPmis != null && selectedPmis.Count > 0)
+                string selectedPmiString = PmiListBuilder.GetSelectedPmiString(pmi_list_box);
+                string selectedPmiKey = PmiListBuilder.GetPmiKey(selectedPmiString);
+                if (pmiState.ContainsKey(selectedPmiKey))
                 {
-                    PmiHighlighter.ToggleHighlights(selectedPmis);
+                    NXOpen.Annotations.Pmi selectedPmi = pmiMap[selectedPmiKey];
+                    
+                    // update the state
+                    // if the pmi was marked as selected, unselect it and the other way around
+                    pmiState[selectedPmiKey] = !pmiState[selectedPmiKey];
+                    PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState); // updates list
+
+                    PmiHighlighter.ToggleHighlight(selectedPmi);
                 }
             }
             else if (block == cam_list_box)
@@ -314,7 +333,6 @@ public class CamPmiUI
         }
         catch (Exception ex)
         {
-            //---- Enter your exception handling code here -----
             theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
         }
         return 0;

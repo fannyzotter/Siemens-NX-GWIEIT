@@ -6,98 +6,83 @@ using NXOpen.BlockStyler;
 
 public static class PmiListBuilder
 {
-    public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap)
+
+    public static Dictionary<string, Pmi> CreatePmiMap()
     {
-
-        // Clear the list box
-        pmiMap.Clear();
-
-        try
+        // create a dictionary to hold the PMI objects
+        Dictionary<string, Pmi> pmiMap = new Dictionary<string, Pmi>();
+        
+        NXOpen.Session theSession = NXOpen.Session.GetSession();
+        NXOpen.Part workPart = theSession.Parts.Work;
+        if (workPart == null)
         {
-            // Get the current session and work part
-            NXOpen.Session theSession = NXOpen.Session.GetSession();
-            NXOpen.Part workPart = theSession.Parts.Work;
+            UI.GetUI().NXMessageBox.Show("Error", NXMessageBox.DialogType.Error, "No part loaded.");
+            return pmiMap;
+        }
 
-            // Check if the work part is null
-            if (workPart == null)
-            {
-                UI theUI = UI.GetUI();
-                theUI.NXMessageBox.Show("Error", NXMessageBox.DialogType.Error, "No part loaded.");
-                return;
-            }
+        PmiManager pmiManager = workPart.PmiManager;
+        PmiCollection pmis = pmiManager.Pmis;
 
-            // Access the PMI Manager
-            PmiManager pmiManager = workPart.PmiManager;
+        // add each PMI to the dictionary
+        int index = 0;
+        foreach (NXOpen.Annotations.Pmi pmi in pmis)
+        {
+            // generate a unique key for each PMI
+            string key = index++.ToString();
 
-            // Get all the PMI attributes in the part
-            PmiCollection pmis = pmiManager.Pmis;
-
-            // Initialize the list to hold PMI names
+            pmiMap.Add(key, pmi);
+        }
+        return pmiMap;
+    }
+    public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap, Dictionary<string, bool> pmiState)
+    {
+        try
+        {s  
             List<string> pmiNames = new List<string>();
-            int index = 0;
 
-            // Iterate over each PMI attribute and extract the PMI name
-            foreach (NXOpen.Annotations.Pmi pmi in pmis)
+            // create the names of the PMIs and add them to the list
+            foreach (var kvp in pmiMap)
             {
-                string pmiType = pmi.Type.ToString();
-                string pmiIndex = pmi.Index.ToString();
+                string key = kvp.Key;
+                Pmi pmi = kvp.Value;
+
+                string prefix = pmiState[key] ? "[x] " : "[ ] ";
+
                 string pmiName = pmi.Name;
-
-                string key = $"PMI_{index++}";
-
-                string displayText = $"{key} - {pmiType} ({pmiIndex}) \"{pmiName}\"";
+                string pmiType = pmi.Type.ToString();
+                string pmiIndex = key;
+               
+                string displayText = prefix + pmiName + " - " + pmiType + " - " + "[" + key + "]";
 
                 pmiNames.Add(displayText);
-                pmiMap[key] = pmi;
             }
-            // Clear any previous entries in the list box
+
+            // set all the PMIs in the list  
             listBox.SetListItems(pmiNames.ToArray());
         }
         catch (Exception ex)
         {
             if (ex.Message.Contains("PopulatePmiList"))
             {
-                // Kein PMI = kein Problem
                 return;
             }
-            UI theUI = UI.GetUI();
-            theUI.NXMessageBox.Show("Block Styler Notice", NXMessageBox.DialogType.Error, ex.ToString());
         }
     }
-
-    public static NXOpen.Annotations.Pmi GetSelectedPmi(ListBox listBox, Dictionary<string, NXOpen.Annotations.Pmi> pmiMap)
+    public static string GetSelectedPmiString(ListBox listBox)
     {
         string[] selectedItems = listBox.GetSelectedItemStrings();
         if (selectedItems == null || selectedItems.Length == 0)
+        {
             return null;
-
-        string selectedText = selectedItems[0]; // z. B. "PMI_2 - ..."
-        string key = selectedText.Split('-')[0].Trim();
-
-        if (pmiMap.TryGetValue(key, out var pmi))
-        {
-            return pmi;
         }
-
-        return null;
+        return selectedItems[0];
     }
-    public static List<NXOpen.Annotations.Pmi> GetSelectedPmis(NXOpen.BlockStyler.ListBox listBox, Dictionary<string, NXOpen.Annotations.Pmi> pmiMap)
+
+    public static string GetPmiKey(string pmiListItem)
     {
-        var selectedItems = listBox.GetSelectedItemStrings();
-        var selectedPmis = new List<NXOpen.Annotations.Pmi>();
-
-        if (selectedItems == null || selectedItems.Length == 0)
-            return selectedPmis;
-
-        foreach (var selectedText in selectedItems)
-        {
-            string key = selectedText.Split('-')[0].Trim();
-            if (pmiMap.TryGetValue(key, out var pmi))
-            {
-                selectedPmis.Add(pmi);
-            }
-        }
-
-        return selectedPmis;
+        // extract the key from the list item string
+        string[] pmiStrings = pmiListItem.Split('-');
+        string key = pmiStrings[pmiStrings.Length-1].Trim().Trim('[', ']');
+        return key;
     }
 }
