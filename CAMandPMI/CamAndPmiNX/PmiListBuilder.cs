@@ -37,7 +37,7 @@ public static class PmiListBuilder
     public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap, Dictionary<string, bool> pmiState)
     {
         try
-        {s  
+        {  
             List<string> pmiNames = new List<string>();
 
             // create the names of the PMIs and add them to the list
