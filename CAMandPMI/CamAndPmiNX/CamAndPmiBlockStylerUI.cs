@@ -258,9 +258,10 @@ public class CamPmiUI
             pmiState[key] = false;
         }
 
-        // populate the list box with PMIs
+        // populate the pmi-list box with PMIs
         PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState);
 
+        // populate the cam-list box with CAM operations
         CamListBuilder.PopulateCamOperationList(cam_list_box);
 
         // error message if no PMIs or CAM operations are found
