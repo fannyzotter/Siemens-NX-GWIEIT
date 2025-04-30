@@ -273,7 +273,7 @@ public class CamPmiUI
                     CamListBuilder.ComparePmiAndCamFaces(selectedPmi, pmiFaceMap, camOperationFaceMap, connectedCamList);
 
                     CamListBuilder.PopulateConnectedCamList(list_box_connected_cam, camMap, connectedCamList);
-                    //CamHighlighter.SelectconnectedCam(pmi_list_box, connectedCamList, camMap);
+                    CamHighlighter.SelectconnectedCam(pmi_list_box, connectedCamList, camMap);
                 }
             }
             else if (block == cam_list_box)
