@@ -6,44 +6,37 @@ using NXOpen.BlockStyler;
 
 public static class PmiListBuilder
 {
-    public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap, Dictionary<Pmi, List<Face>> pmiFaceMap)
+    public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap, Dictionary<Pmi, List<Face>> pmiFaceMap, Dictionary<string, bool> pmiState)
     {
-        // create a dictionary to hold the PMI objects
-        Dictionary<string, Pmi> pmiMap = new Dictionary<string, Pmi>();
-        
         NXOpen.Session theSession = NXOpen.Session.GetSession();
         NXOpen.Part workPart = theSession.Parts.Work;
         if (workPart == null)
         {
             UI.GetUI().NXMessageBox.Show("Error", NXMessageBox.DialogType.Error, "No part loaded.");
-            return pmiMap;
         }
 
         PmiManager pmiManager = workPart.PmiManager;
         PmiCollection pmis = pmiManager.Pmis;
 
-            // Initialize the list to hold PMI names
-            List<string> pmiNames = new List<string>();
-            int index = 0;
-
-            // Iterate over each PMI attribute and extract the PMI name
-            foreach (NXOpen.Annotations.Pmi pmi in pmis)
-            {
-                AssociatedObject assObject = pmi.GetAssociatedObject();
-                NXObject[] objekt = assObject.GetObjects();
-
-        // add each PMI to the dictionary
+        List<string> pmiNames = new List<string>(); 
         int index = 0;
+            
         foreach (NXOpen.Annotations.Pmi pmi in pmis)
         {
+            AssociatedObject assObject = pmi.GetAssociatedObject();
+            NXObject[] objekt = assObject.GetObjects();
             // generate a unique key for each PMI
             string key = index++.ToString();
 
             pmiMap.Add(key, pmi);
         }
-        return pmiMap;
+
+        foreach (var key in pmiMap.Keys)
+        {
+            pmiState[key] = false;
+        }
     }
-    public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap, Dictionary<string, bool> pmiState)
+    public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap)
     {
         try
         {  

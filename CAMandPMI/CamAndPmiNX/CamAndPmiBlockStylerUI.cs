@@ -64,17 +64,16 @@ public class CamPmiUI
     // Added
     private Dictionary<string, Pmi> pmiMap = new Dictionary<string, Pmi>();
     private Dictionary<Pmi, List<Face>> pmiFaceMap = new Dictionary<Pmi, List<Face>>();
+    private Dictionary<string, bool> pmiState = new Dictionary<string, bool>();
 
     private Dictionary<string, NXOpen.CAM.Operation> camMap = new Dictionary<string, NXOpen.CAM.Operation>();
     private Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap = new Dictionary<NXOpen.CAM.Operation, List<Face>>();
 
     private List<NXOpen.CAM.Operation> connectedCamList = new List<NXOpen.CAM.Operation>();
-
     private NXOpen.CAM.Operation highlightedOperation;
 
     private Pmi highlightedPMI;
     private NXObject highlightedObject;
-    private Dictionary<string, bool> pmiState = new Dictionary<string, bool>();
     private NXObject selectedObject;
 
     private Feature highlightedFeature;
@@ -228,22 +227,17 @@ public class CamPmiUI
     //------------------------------------------------------------------------------
     public void dialogShown_cb()
     {
-        PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiFaceMap);
+        PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiFaceMap, pmiState);
         
         CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup);
         CamListBuilder.PopulateCamWithFaces(camSetup, camMap, camOperationFaceMap);
 
-        // initialize pmiMap
-        pmiMap = PmiListBuilder.CreatePmiMap();
-
-        // initialize pmiStates: in the beginning all PMIs are not selected
-        foreach (var key in pmiMap.Keys)
-        {
-            pmiState[key] = false;
-        }
+        
 
         // populate the pmi-list box with PMIs
-        PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState);
+
+        // initialize pmiStates: in the beginning all PMIs are not selected
+        
 
         // populate the cam-list box with CAM operations
         CamListBuilder.PopulateCamOperationList(cam_list_box);
