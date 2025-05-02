@@ -1,4 +1,5 @@
-﻿using NXOpen;
+﻿using System.Collections.Generic;
+using NXOpen;
 using NXOpen.Annotations;
 using NXOpen.UF;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 
 public static class PmiHighlighter
 {
+
     private static NXOpen.Annotations.Pmi highlightedPMI;
     private static List<Face> highlightedFaces = new List<Face>();
     private static UFSession ufSession = UFSession.GetUFSession();

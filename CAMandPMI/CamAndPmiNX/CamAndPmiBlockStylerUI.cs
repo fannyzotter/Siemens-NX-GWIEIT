@@ -74,6 +74,7 @@ public class CamPmiUI
 
     private Pmi highlightedPMI;
     private NXObject highlightedObject;
+    private Dictionary<string, bool> pmiState = new Dictionary<string, bool>();
     private NXObject selectedObject;
 
     private Feature highlightedFeature;
@@ -102,7 +103,6 @@ public class CamPmiUI
             theDialog.AddUpdateHandler(new NXOpen.BlockStyler.BlockDialog.Update(update_cb));
             theDialog.AddInitializeHandler(new NXOpen.BlockStyler.BlockDialog.Initialize(initialize_cb));
             theDialog.AddDialogShownHandler(new NXOpen.BlockStyler.BlockDialog.DialogShown(dialogShown_cb));
-
         }
         catch (Exception ex)
         {
@@ -233,6 +233,40 @@ public class CamPmiUI
         CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup);
         CamListBuilder.PopulateCamWithFaces(camSetup, camMap, camOperationFaceMap);
 
+        // initialize pmiMap
+        pmiMap = PmiListBuilder.CreatePmiMap();
+
+        // initialize pmiStates: in the beginning all PMIs are not selected
+        foreach (var key in pmiMap.Keys)
+        {
+            pmiState[key] = false;
+        }
+
+        // populate the pmi-list box with PMIs
+        PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState);
+
+        // populate the cam-list box with CAM operations
+        CamListBuilder.PopulateCamOperationList(cam_list_box);
+
+        // error message if no PMIs or CAM operations are found
+        bool noPMIsFound = pmi_list_box.GetListItems().Length == 0;
+        bool noCAMOpsFound = cam_list_box.GetListItems().Length == 0;
+
+        if (noPMIsFound && noCAMOpsFound)
+        {
+            theUI.NXMessageBox.Show("Notice", NXMessageBox.DialogType.Warning,
+                "Neither PMI objects nor CAM operations were found.");
+        }
+        else if (noPMIsFound)
+        {
+            theUI.NXMessageBox.Show("Notice", NXMessageBox.DialogType.Warning,
+                "No PMI objects were found.");
+        }
+        else if (noCAMOpsFound)
+        {
+            theUI.NXMessageBox.Show("Notice", NXMessageBox.DialogType.Warning,
+                "No CAM operations were found.");
+        }
     }
 
     //------------------------------------------------------------------------------
@@ -265,10 +299,17 @@ public class CamPmiUI
         {
             if (block == pmi_list_box)
             {
-                // added
-                var selectedPmi = PmiListBuilder.GetSelectedPmi(pmi_list_box, pmiMap);
-                if (selectedPmi != null)
+                string selectedPmiString = PmiListBuilder.GetSelectedPmiString(pmi_list_box);
+                string selectedPmiKey = PmiListBuilder.GetPmiKey(selectedPmiString);
+                if (pmiState.ContainsKey(selectedPmiKey))
                 {
+                    NXOpen.Annotations.Pmi selectedPmi = pmiMap[selectedPmiKey];
+                    
+                    // update the state
+                    // if the pmi was marked as selected, unselect it and the other way around
+                    pmiState[selectedPmiKey] = !pmiState[selectedPmiKey];
+                    PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState); // updates list
+
                     PmiHighlighter.ToggleHighlight(selectedPmi);
                     CamListBuilder.ComparePmiAndCamFaces(selectedPmi, pmiFaceMap, camOperationFaceMap, connectedCamList);
 
@@ -287,7 +328,6 @@ public class CamPmiUI
         }
         catch (Exception ex)
         {
-            //---- Enter your exception handling code here -----
             theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
         }
         return 0;
