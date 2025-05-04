@@ -6,8 +6,9 @@ using NXOpen.BlockStyler;
 
 public static class PmiListBuilder
 {
-    public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap, Dictionary<Pmi, List<Face>> pmiFaceMap, Dictionary<string, bool> pmiState)
+    public static void createPmiLists(Dictionary<string, Pmi> pmiMap, Dictionary<Pmi, List<Face>> pmiFaceMap, Dictionary<Pmi, bool> pmiState)
     {
+        UI theUI = UI.GetUI();
         NXOpen.Session theSession = NXOpen.Session.GetSession();
         NXOpen.Part workPart = theSession.Parts.Work;
         if (workPart == null)
@@ -19,24 +20,39 @@ public static class PmiListBuilder
         PmiCollection pmis = pmiManager.Pmis;
 
         List<string> pmiNames = new List<string>(); 
-        int index = 0;
             
         foreach (NXOpen.Annotations.Pmi pmi in pmis)
         {
             AssociatedObject assObject = pmi.GetAssociatedObject();
             NXObject[] objekt = assObject.GetObjects();
             // generate a unique key for each PMI
-            string key = index++.ToString();
+            string key = pmi.Index.ToString() + " " + pmi.Name.ToString();
 
             pmiMap.Add(key, pmi);
+
+            List<Face> faces = new List<Face>();
+            foreach (NXObject nxobj in objekt)
+            {
+                if (nxobj is Face objface)
+                {
+                    faces.Add(objface);
+                }
+            }
+            if (!pmiFaceMap.ContainsKey(pmi))
+            {
+                pmiFaceMap[pmi] = faces;
+            }
         }
 
-        foreach (var key in pmiMap.Keys)
+        foreach (var key in pmiMap.Values)
         {
             pmiState[key] = false;
         }
+
     }
-    public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap)
+
+
+    public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap, Dictionary<Pmi, bool> pmiState)
     {
         try
         {  
@@ -48,29 +64,14 @@ public static class PmiListBuilder
                 string key = kvp.Key;
                 Pmi pmi = kvp.Value;
 
-                string prefix = pmiState[key] ? "[x] " : "[ ] ";
+                string prefix = pmiState[pmi] ? "[x] " : "[ ] ";
 
                 string pmiName = pmi.Name;
                 string pmiType = pmi.Type.ToString();
-                string pmiIndex = key;
                
                 string displayText = prefix + pmiName + " - " + pmiType + " - " + "[" + key + "]";
 
                 pmiNames.Add(displayText);
-
-                List<Face> faces = new List<Face>();
-                foreach (NXObject nxobj in objekt)
-                {
-                    if (nxobj is Face objface)
-                    {
-                        faces.Add(objface);
-                    }
-                }
-                if (!pmiFaceMap.ContainsKey(pmi))
-                {
-                    pmiFaceMap[pmi] = faces;
-                }
-                pmiMap[key] = pmi;
             }
 
             // set all the PMIs in the list  
@@ -84,22 +85,27 @@ public static class PmiListBuilder
             }
         }
     }
-    public static string GetSelectedPmiString(ListBox listBox)
+
+    public static Pmi GetSelectedPmiFromList(ListBox listBox, Dictionary<string, Pmi> pmiMap)
     {
         string[] selectedItems = listBox.GetSelectedItemStrings();
-        listBox.SetSelectedItemStrings(selectedItems); // Set the selected items again to ensure they are highlighted
+        listBox.SetSelectedItemStrings(selectedItems); // refresh highlight
+
         if (selectedItems == null || selectedItems.Length == 0)
         {
             return null;
         }
-        return selectedItems[0];
+
+        // Extract key from list entry, e.g. "... - [key]"
+        string[] parts = selectedItems[0].Split('-');
+        string key = parts[parts.Length - 1].Trim().Trim('[', ']');
+
+        if (pmiMap.TryGetValue(key, out var pmi))
+        {
+            return pmi;
+        }
+
+        return null;
     }
 
-    public static string GetPmiKey(string pmiListItem)
-    {
-        // extract the key from the list item string
-        string[] pmiStrings = pmiListItem.Split('-');
-        string key = pmiStrings[pmiStrings.Length-1].Trim().Trim('[', ']');
-        return key;
-    }
 }

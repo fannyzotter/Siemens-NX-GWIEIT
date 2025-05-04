@@ -64,7 +64,7 @@ public class CamPmiUI
     // Added
     private Dictionary<string, Pmi> pmiMap = new Dictionary<string, Pmi>();
     private Dictionary<Pmi, List<Face>> pmiFaceMap = new Dictionary<Pmi, List<Face>>();
-    private Dictionary<string, bool> pmiState = new Dictionary<string, bool>();
+    private Dictionary<Pmi, bool> pmiState = new Dictionary<Pmi, bool>();
 
     private Dictionary<string, NXOpen.CAM.Operation> camMap = new Dictionary<string, NXOpen.CAM.Operation>();
     private Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap = new Dictionary<NXOpen.CAM.Operation, List<Face>>();
@@ -175,10 +175,10 @@ public class CamPmiUI
     //------------------------------------------------------------------------------
     public void Dispose()
     {
+        CamHighlighter.ClearCamHighlight(camOperationFaceMap);
+        PmiHighlighter.ClearPmiHighlight(pmiFaceMap);
         if (theDialog != null)
         {
-            CamHighlighter.ClearCamHighlight(camOperationFaceMap);
-            PmiHighlighter.ClearPmiHighlight(pmiFaceMap);
             theDialog.Dispose();
             theDialog = null;
         }
@@ -227,20 +227,14 @@ public class CamPmiUI
     //------------------------------------------------------------------------------
     public void dialogShown_cb()
     {
-        PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiFaceMap, pmiState);
+        PmiListBuilder.createPmiLists(pmiMap, pmiFaceMap, pmiState);
+        PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState);
         
         CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup);
         CamListBuilder.PopulateCamWithFaces(camSetup, camMap, camOperationFaceMap);
 
         
-
-        // populate the pmi-list box with PMIs
-
         // initialize pmiStates: in the beginning all PMIs are not selected
-        
-
-        // populate the cam-list box with CAM operations
-        CamListBuilder.PopulateCamOperationList(cam_list_box);
 
         // error message if no PMIs or CAM operations are found
         bool noPMIsFound = pmi_list_box.GetListItems().Length == 0;
@@ -277,6 +271,8 @@ public class CamPmiUI
         }
         catch (Exception ex)
         {
+            theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, "hier 1");
+
             //---- Enter your exception handling code here -----
             errorCode = 1;
             theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
@@ -293,22 +289,22 @@ public class CamPmiUI
         {
             if (block == pmi_list_box)
             {
-                string selectedPmiString = PmiListBuilder.GetSelectedPmiString(pmi_list_box);
-                string selectedPmiKey = PmiListBuilder.GetPmiKey(selectedPmiString);
+                Pmi selectedPmiKey = PmiListBuilder.GetSelectedPmiFromList(pmi_list_box, pmiMap);
                 if (pmiState.ContainsKey(selectedPmiKey))
                 {
-                    NXOpen.Annotations.Pmi selectedPmi = pmiMap[selectedPmiKey];
+                    NXOpen.Annotations.Pmi selectedPmi = selectedPmiKey;
                     
                     // update the state
                     // if the pmi was marked as selected, unselect it and the other way around
                     pmiState[selectedPmiKey] = !pmiState[selectedPmiKey];
                     PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState); // updates list
 
-                    PmiHighlighter.ToggleHighlight(selectedPmi);
-                    CamListBuilder.ComparePmiAndCamFaces(selectedPmi, pmiFaceMap, camOperationFaceMap, connectedCamList);
+                    PmiHighlighter.ToggleHighlight(pmiState, pmiFaceMap);
 
+                    CamListBuilder.ComparePmiAndCamFaces(pmiState, pmiFaceMap, camOperationFaceMap, connectedCamList);
                     CamListBuilder.PopulateConnectedCamList(list_box_connected_cam, camMap, connectedCamList);
-                    CamHighlighter.SelectconnectedCam(pmi_list_box, connectedCamList, camMap);
+
+                    CamHighlighter.SelectConnectedCam(pmi_list_box, connectedCamList, camMap);
                 }
             }
             else if (block == cam_list_box)
@@ -335,9 +331,9 @@ public class CamPmiUI
         int errorCode = 0;
         try
         {
-            errorCode = apply_cb();
             CamHighlighter.ClearCamHighlight(camOperationFaceMap);
             PmiHighlighter.ClearPmiHighlight(pmiFaceMap);
+            //errorCode = apply_cb();
             //---- Enter your callback code here -----
         }
         catch (Exception ex)

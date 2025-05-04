@@ -8,11 +8,10 @@ using NXOpen.UF;
 using NXOpen.CAE;
 using Operation = NXOpen.CAM.Operation;
 using NXOpen.Annotations;
+using System.Linq;
 
 public static class CamListBuilder
 {
-
-
     public static void PopulateCamOperationList(ListBox listBox, Dictionary<string, NXOpen.CAM.Operation> camMap, CAMSetup camSetup)
     {
         try
@@ -136,39 +135,35 @@ public static class CamListBuilder
         return null;
     }
 
-    // Function that compares PMI and Cam faces and returns a list of Cam operations that are associated with the same faces
-    public static void ComparePmiAndCamFaces(Pmi selectedPmi, Dictionary<Pmi, List<Face>> pmiFaceMap, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap, List<Operation> connectedCam)
+    public static void ComparePmiAndCamFaces(Dictionary<Pmi, bool> pmiState, Dictionary<Pmi, List<Face>> pmiFaceMap, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap, List<Operation> connectedCam)
     {
         connectedCam.Clear();
+        List<Operation> uniqueCamOps = new List<Operation>();
 
-        List<Face> selectedFaces = new List<Face>();
-
-        if (selectedPmi == null || !pmiFaceMap.ContainsKey(selectedPmi))
+        foreach (var pmiEntry in pmiState)
         {
-            return;
-        }
+            if (!pmiEntry.Value) continue;
 
-        selectedFaces = pmiFaceMap[selectedPmi];
-        if (selectedFaces == null || selectedFaces.Count == 0)
-        {
-            return;
-        }
+            var pmi = pmiFaceMap.Keys.FirstOrDefault(k => k == pmiEntry.Key);
+            if (pmi == null || !pmiFaceMap.ContainsKey(pmi)) continue;
 
-        foreach (var camEntry in camOperationFaceMap)
-        {
-            NXOpen.CAM.Operation camOperation = camEntry.Key;
-            List<Face> camFaces = camEntry.Value;
-            // Check if any of the faces in the selected PMI match with the faces in the CAM operation
-            foreach (var face in selectedFaces)
+            var selectedFaces = pmiFaceMap[pmi];
+            if (selectedFaces == null || selectedFaces.Count == 0) continue;
+
+            foreach (var camEntry in camOperationFaceMap)
             {
-                if (camFaces.Contains(face))
+                var camOperation = camEntry.Key;
+                var camFaces = camEntry.Value;
+
+                if (selectedFaces.Any(face => camFaces.Contains(face)))
                 {
-                    connectedCam.Add(camOperation);
-                    break; // No need to check further for this operation
+                    uniqueCamOps.Add(camOperation);
                 }
             }
         }
-        return;
+
+        connectedCam.AddRange(uniqueCamOps);
     }
+
 
 }

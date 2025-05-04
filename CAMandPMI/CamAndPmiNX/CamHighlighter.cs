@@ -4,6 +4,7 @@ using NXOpen.CAM;
 using NXOpen.UF;
 using NXOpen.Annotations;
 using NXOpen.BlockStyler;
+using System;
 
 public static class CamHighlighter
 {
@@ -41,20 +42,33 @@ public static class CamHighlighter
     }
     public static void ClearCamHighlight(Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap)
     {
+        if (ufSession == null)
+            ufSession = UFSession.GetUFSession();
+
         foreach (var kvp in camOperationFaceMap)
         {
+            if (kvp.Value == null) continue;
+
             foreach (var face in kvp.Value)
             {
-                ufSession.Disp.SetHighlight(face.Tag, 0);
+                if (face != null && face.Tag > 0)
+                {
+                    try
+                    {
+                        ufSession.Disp.SetHighlight(face.Tag, 0);
+                    }
+                    catch (Exception ex)
+                    {
+                        UI.GetUI().NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.Message);
+                    }
+                }
             }
         }
         highlightedFaces.Clear();
     }
 
-
-
     // function that selects the strings in the listbox of all the matching operations
-    public static void SelectconnectedCam(ListBox listBox, List<NXOpen.CAM.Operation> connectedCam, Dictionary<string, NXOpen.CAM.Operation> camMap)
+    public static void SelectConnectedCam(ListBox listBox, List<NXOpen.CAM.Operation> connectedCam, Dictionary<string, NXOpen.CAM.Operation> camMap)
     {
         string[] selectedItems = null;
         if (connectedCam == null || connectedCam.Count == 0)
