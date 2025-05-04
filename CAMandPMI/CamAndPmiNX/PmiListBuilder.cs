@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NXOpen;
 using NXOpen.Annotations;
 using NXOpen.BlockStyler;
 
 public static class PmiListBuilder
 {
-    public static void createPmiLists(Dictionary<string, Pmi> pmiMap, Dictionary<Pmi, List<Face>> pmiFaceMap, Dictionary<Pmi, bool> pmiState)
+    public static void createPmiLists(Dictionary<string, Pmi> pmiMap, Dictionary<Pmi, List<Face>> pmiFaceMap,
+        Dictionary<Pmi, bool> pmiState)
     {
         UI theUI = UI.GetUI();
         NXOpen.Session theSession = NXOpen.Session.GetSession();
@@ -19,8 +21,8 @@ public static class PmiListBuilder
         PmiManager pmiManager = workPart.PmiManager;
         PmiCollection pmis = pmiManager.Pmis;
 
-        List<string> pmiNames = new List<string>(); 
-            
+        List<string> pmiNames = new List<string>();
+
         foreach (NXOpen.Annotations.Pmi pmi in pmis)
         {
             AssociatedObject assObject = pmi.GetAssociatedObject();
@@ -38,6 +40,7 @@ public static class PmiListBuilder
                     faces.Add(objface);
                 }
             }
+
             if (!pmiFaceMap.ContainsKey(pmi))
             {
                 pmiFaceMap[pmi] = faces;
@@ -55,7 +58,7 @@ public static class PmiListBuilder
     public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap, Dictionary<Pmi, bool> pmiState)
     {
         try
-        {  
+        {
             List<string> pmiNames = new List<string>();
 
             // create the names of the PMIs and add them to the list
@@ -68,7 +71,7 @@ public static class PmiListBuilder
 
                 string pmiName = pmi.Name;
                 string pmiType = pmi.Type.ToString();
-               
+
                 string displayText = prefix + pmiName + " - " + pmiType + " - " + "[" + key + "]";
 
                 pmiNames.Add(displayText);
@@ -106,6 +109,23 @@ public static class PmiListBuilder
         }
 
         return null;
+    }
+
+    // clear pmistate directory to only false 
+    public static void ClearPmiState(Dictionary<Pmi, bool> pmiState)
+    {
+
+        foreach (var key in pmiState.Keys.ToList())
+        {
+            try
+            {
+                pmiState[key] = false;
+            }
+            catch (Exception e)
+            {
+                // Optional: Fehlerbehandlung, z. B. Logging
+            }
+        }
     }
 
 }

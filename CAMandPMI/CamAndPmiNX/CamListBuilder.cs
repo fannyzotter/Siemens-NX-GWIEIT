@@ -165,5 +165,11 @@ public static class CamListBuilder
         connectedCam.AddRange(uniqueCamOps);
     }
 
+    // clear the list of selected cam operations
+    public static void ClearCamOperationList(ListBox listBox)
+    {
+        listBox.SetSelectedItemStrings(new string[] { });
+        listBox.SetListItems(new string[] { });
+    }
 
 }

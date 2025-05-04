@@ -55,6 +55,7 @@ public class CamPmiUI
     private static UI theUI = null;
     private string theDlxFileName;
     private NXOpen.BlockStyler.BlockDialog theDialog;
+    private NXOpen.BlockStyler.Button button_clear_highlights;// Block type: Button
     private NXOpen.BlockStyler.ScrolledWindow scrolledWindow;// Block type: Scrolled Window
     private NXOpen.BlockStyler.ListBox pmi_list_box;// Block type: List Box
     private NXOpen.BlockStyler.ListBox cam_list_box;// Block type: List Box
@@ -64,7 +65,7 @@ public class CamPmiUI
     // Added
     private Dictionary<string, Pmi> pmiMap = new Dictionary<string, Pmi>();
     private Dictionary<Pmi, List<Face>> pmiFaceMap = new Dictionary<Pmi, List<Face>>();
-    private Dictionary<Pmi, bool> pmiState = new Dictionary<Pmi, bool>();
+    public Dictionary<Pmi, bool> pmiState = new Dictionary<Pmi, bool>();
 
     private Dictionary<string, NXOpen.CAM.Operation> camMap = new Dictionary<string, NXOpen.CAM.Operation>();
     private Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap = new Dictionary<NXOpen.CAM.Operation, List<Face>>();
@@ -195,6 +196,7 @@ public class CamPmiUI
     {
         try
         {
+            button_clear_highlights = (NXOpen.BlockStyler.Button)theDialog.TopBlock.FindBlock("button_clear_highlights");
             scrolledWindow = (NXOpen.BlockStyler.ScrolledWindow)theDialog.TopBlock.FindBlock("scrolledWindow");
             pmi_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("pmi_list_box"); 
             list_box_connected_cam = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("list_box_connected_cam");
@@ -287,6 +289,7 @@ public class CamPmiUI
     {
         try
         {
+            
             if (block == pmi_list_box)
             {
                 Pmi selectedPmiKey = PmiListBuilder.GetSelectedPmiFromList(pmi_list_box, pmiMap);
@@ -306,6 +309,23 @@ public class CamPmiUI
 
                     CamHighlighter.SelectConnectedCam(pmi_list_box, connectedCamList, camMap);
                 }
+            }
+            else if(block == button_clear_highlights)
+            {
+                try
+                {
+                    CamHighlighter.ClearCamHighlight(camOperationFaceMap);
+                    PmiHighlighter.ClearPmiHighlight(pmiFaceMap);
+                    PmiListBuilder.ClearPmiState(pmiState);
+                    PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState); // updates list
+                    CamListBuilder.ClearCamOperationList(list_box_connected_cam);
+                }
+                catch (Exception ex)
+                {
+                    theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Warning, ex.ToString());
+                }
+
+
             }
             else if (block == cam_list_box)
             {

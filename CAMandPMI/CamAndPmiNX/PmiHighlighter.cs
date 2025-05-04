@@ -9,7 +9,6 @@ using System;
 
 public static class PmiHighlighter
 {
-    private static List<Face> highlightedFaces = new List<Face>();
     private static UFSession ufSession = UFSession.GetUFSession();
 
     public static void ToggleHighlight(Dictionary<Pmi, bool> pmiState, Dictionary<Pmi, List<Face>> pmiFaceMap)
@@ -67,18 +66,9 @@ public static class PmiHighlighter
             {
                 if (face != null && face.Tag > 0)
                 {
-                    try
-                    {
-                        ufSession.Disp.SetHighlight(face.Tag, 0);
-                    }
-                    catch (Exception ex)
-                    {
-                        // Optional: Logge oder ignoriere einzelne Fehler
-                        UI.GetUI().NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.Message);
-                    }
+                    ufSession.Disp.SetHighlight(face.Tag, 0);
                 }
             }
         }
-        highlightedFaces.Clear();
     }
 }
