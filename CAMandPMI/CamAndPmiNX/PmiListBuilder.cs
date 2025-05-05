@@ -1,61 +1,107 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NXOpen;
 using NXOpen.Annotations;
 using NXOpen.BlockStyler;
 
 public static class PmiListBuilder
 {
-    public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap)
+    public static void createPmiLists(Dictionary<string, Pmi> pmiMap, Dictionary<Pmi, List<Face>> pmiFaceMap,
+        Dictionary<Pmi, bool> pmiState)
+    {
+        UI theUI = UI.GetUI();
+        NXOpen.Session theSession = NXOpen.Session.GetSession();
+        NXOpen.Part workPart = theSession.Parts.Work;
+        if (workPart == null)
+        {
+            UI.GetUI().NXMessageBox.Show("Error", NXMessageBox.DialogType.Error, "No part loaded.");
+        }
+
+        PmiManager pmiManager = workPart.PmiManager;
+        PmiCollection pmis = pmiManager.Pmis;
+
+        List<string> pmiNames = new List<string>();
+
+        foreach (NXOpen.Annotations.Pmi pmi in pmis)
+        {
+            AssociatedObject assObject = pmi.GetAssociatedObject();
+            NXObject[] objekt = assObject.GetObjects();
+            // generate a unique key for each PMI
+            string key = pmi.Index.ToString();
+
+            pmiMap.Add(key, pmi);
+
+            List<Face> faces = new List<Face>();
+            foreach (NXObject nxobj in objekt)
+            {
+                if (nxobj is Face objface)
+                {
+                    faces.Add(objface);
+                }
+            }
+
+            if (!pmiFaceMap.ContainsKey(pmi))
+            {
+                pmiFaceMap[pmi] = faces;
+            }
+        }
+
+        foreach (var key in pmiMap.Values)
+        {
+            pmiState[key] = false;
+        }
+
+    }
+
+
+    public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap, Dictionary<Pmi, bool> pmiState)
     {
         try
         {
-            // Get the current session and work part
-            NXOpen.Session theSession = NXOpen.Session.GetSession();
-            NXOpen.Part workPart = theSession.Parts.Work;
-
-            // Access the PMI Manager
-            PmiManager pmiManager = workPart.PmiManager;
-
-            // Get all the PMI attributes in the part
-            PmiCollection pmis = pmiManager.Pmis;
-
-            // Initialize the list to hold PMI names
             List<string> pmiNames = new List<string>();
-            int index = 0;
 
-            // Iterate over each PMI attribute and extract the PMI name
-            foreach (NXOpen.Annotations.Pmi pmi in pmis)
+            // create the names of the PMIs and add them to the list
+            foreach (var kvp in pmiMap)
             {
-                string pmiType = pmi.Type.ToString();
-                string pmiIndex = pmi.Index.ToString();
+                string key = kvp.Key;
+                Pmi pmi = kvp.Value;
+
+                string prefix = pmiState[pmi] ? "[x] " : "[ ] ";
+
                 string pmiName = pmi.Name;
+                string pmiType = pmi.Type.ToString();
 
-                string key = $"PMI_{index++}";
-
-                string displayText = $"{key} - {pmiType} ({pmiIndex}) \"{pmiName}\"";
+                string displayText = prefix + pmiName + " - " + pmiType + " - " + "[" + key + "]";
 
                 pmiNames.Add(displayText);
-                pmiMap[key] = pmi;
             }
-            // Clear any previous entries in the list box
+
+            // set all the PMIs in the list  
             listBox.SetListItems(pmiNames.ToArray());
         }
         catch (Exception ex)
         {
-            UI theUI = UI.GetUI();
-            theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
+            if (ex.Message.Contains("PopulatePmiList"))
+            {
+                return;
+            }
         }
     }
 
-    public static NXOpen.Annotations.Pmi GetSelectedPmi(ListBox listBox, Dictionary<string, NXOpen.Annotations.Pmi> pmiMap)
+    public static Pmi GetSelectedPmiFromList(ListBox listBox, Dictionary<string, Pmi> pmiMap)
     {
         string[] selectedItems = listBox.GetSelectedItemStrings();
-        if (selectedItems == null || selectedItems.Length == 0)
-            return null;
+        listBox.SetSelectedItemStrings(selectedItems); // refresh highlight
 
-        string selectedText = selectedItems[0]; // z. B. "PMI_2 - ..."
-        string key = selectedText.Split('-')[0].Trim();
+        if (selectedItems == null || selectedItems.Length == 0)
+        {
+            return null;
+        }
+
+        // Extract key from list entry, e.g. "... - [key]"
+        string[] parts = selectedItems[0].Split('-');
+        string key = parts[parts.Length - 1].Trim().Trim('[', ']');
 
         if (pmiMap.TryGetValue(key, out var pmi))
         {
@@ -64,4 +110,22 @@ public static class PmiListBuilder
 
         return null;
     }
+
+    // clear pmistate directory to only false 
+    public static void ClearPmiState(Dictionary<Pmi, bool> pmiState)
+    {
+
+        foreach (var key in pmiState.Keys.ToList())
+        {
+            try
+            {
+                pmiState[key] = false;
+            }
+            catch (Exception e)
+            {
+                // Optional: Fehlerbehandlung, z. B. Logging
+            }
+        }
+    }
+
 }

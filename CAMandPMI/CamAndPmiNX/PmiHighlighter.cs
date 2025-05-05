@@ -1,39 +1,74 @@
-﻿using NXOpen;
+﻿using System.Collections.Generic;
+using NXOpen;
 using NXOpen.Annotations;
 using NXOpen.UF;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 
 public static class PmiHighlighter
 {
-    private static NXOpen.Annotations.Pmi highlightedPMI;
-    private static NXObject highlightedObject;
     private static UFSession ufSession = UFSession.GetUFSession();
 
-    public static void ToggleHighlight(NXOpen.Annotations.Pmi selectedPmi)
+    public static void ToggleHighlight(Dictionary<Pmi, bool> pmiState, Dictionary<Pmi, List<Face>> pmiFaceMap)
     {
-        if (highlightedPMI != null || highlightedPMI == selectedPmi)
+        // Alte Highlights entfernen
+        foreach (var kvp in pmiFaceMap)
         {
-            ufSession.Disp.SetHighlight(highlightedPMI.Tag, 0);
-            highlightedPMI = null;
-        }
-        else
-        {
-            ufSession.Disp.SetHighlight(selectedPmi.Tag, 1);
-            highlightedPMI = selectedPmi;
+            if (kvp.Value == null) continue;
+            foreach (var face in kvp.Value)
+            {
+                if (face != null && face.Tag > 0)
+                {
+                    try
+                    {
+                        ufSession.Disp.SetHighlight(face.Tag, 0);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Optional: Logge oder ignoriere einzelne Fehler
+                        UI.GetUI().NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.Message);
+                    }
+                }
+            }
         }
 
-        AssociatedObject assObject = selectedPmi.GetAssociatedObject();
-        NXObject objekt = assObject.GetObjects()[0];
+        // Alle aktiven PMI verarbeiten
+        foreach (var selectedPmi in pmiState)
+        {
+            if (!selectedPmi.Value) continue;
 
-        if (highlightedObject != null || highlightedObject == objekt)
-        {
-            ufSession.Disp.SetHighlight(highlightedObject.Tag, 0);
-            highlightedObject = null;
+            foreach (var kvp in pmiFaceMap)
+            {
+                if (selectedPmi.Key == kvp.Key)
+                {
+                    var faces = kvp.Value;
+                    foreach (var face in faces)
+                    {
+                        ufSession.Disp.SetHighlight(face.Tag, 1);
+                    }
+                }
+            }
         }
-        else
+    }
+
+    public static void ClearPmiHighlight(Dictionary<Pmi, List<Face>> pmiFaceMap)
+    {
+        if (ufSession == null)
+            ufSession = UFSession.GetUFSession();
+
+        foreach (var kvp in pmiFaceMap)
         {
-            ufSession.Disp.SetHighlight(objekt.Tag, 1);
-            highlightedObject = objekt;
+            if (kvp.Value == null) continue;
+
+            foreach (var face in kvp.Value)
+            {
+                if (face != null && face.Tag > 0)
+                {
+                    ufSession.Disp.SetHighlight(face.Tag, 0);
+                }
+            }
         }
     }
 }
