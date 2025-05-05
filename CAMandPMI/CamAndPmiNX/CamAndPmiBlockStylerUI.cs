@@ -69,6 +69,7 @@ public class CamPmiUI
 
     private Dictionary<string, NXOpen.CAM.Operation> camMap = new Dictionary<string, NXOpen.CAM.Operation>();
     private Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap = new Dictionary<NXOpen.CAM.Operation, List<Face>>();
+    private Dictionary<NXOpen.CAM.Operation, bool> camState = new Dictionary<NXOpen.CAM.Operation, bool>();
 
     private List<NXOpen.CAM.Operation> connectedCamList = new List<NXOpen.CAM.Operation>();
     private NXOpen.CAM.Operation highlightedOperation;
@@ -232,7 +233,8 @@ public class CamPmiUI
         PmiListBuilder.createPmiLists(pmiMap, pmiFaceMap, pmiState);
         PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState);
         
-        CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup);
+        CamListBuilder.createCamOperationLists(camSetup, camMap,camState);
+        CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
         CamListBuilder.PopulateCamWithFaces(camSetup, camMap, camOperationFaceMap);
 
         
@@ -304,10 +306,12 @@ public class CamPmiUI
 
                     PmiHighlighter.ToggleHighlight(pmiState, pmiFaceMap);
 
-                    CamListBuilder.ComparePmiAndCamFaces(pmiState, pmiFaceMap, camOperationFaceMap, connectedCamList);
+                    CamListBuilder.ComparePmiAndCamFaces(pmiState, pmiFaceMap, camOperationFaceMap, connectedCamList, camState);
                     CamListBuilder.PopulateConnectedCamList(list_box_connected_cam, camMap, connectedCamList);
-
+                  
                     CamHighlighter.SelectConnectedCam(pmi_list_box, connectedCamList, camMap);
+
+                    CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
                 }
             }
             else if(block == button_clear_highlights)
@@ -319,6 +323,8 @@ public class CamPmiUI
                     PmiListBuilder.ClearPmiState(pmiState);
                     PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState); // updates list
                     CamListBuilder.ClearCamOperationList(list_box_connected_cam);
+                    CamListBuilder.ClearCamState(camState);
+                    CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
                 }
                 catch (Exception ex)
                 {

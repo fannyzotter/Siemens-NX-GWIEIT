@@ -9,10 +9,61 @@ using NXOpen.CAE;
 using Operation = NXOpen.CAM.Operation;
 using NXOpen.Annotations;
 using System.Linq;
+using static NXOpen.Annotations.Pmi;
 
 public static class CamListBuilder
+
 {
-    public static void PopulateCamOperationList(ListBox listBox, Dictionary<string, NXOpen.CAM.Operation> camMap, CAMSetup camSetup)
+    // for CollectOperationsRecursive
+    static int index = 0;
+
+    public static void createCamOperationLists(CAMSetup camSetup, Dictionary<string, NXOpen.CAM.Operation> camMap, Dictionary<NXOpen.CAM.Operation, bool> camState)
+    {
+        NCGroup programGroup = camSetup.GetRoot(CAMSetup.View.ProgramOrder);
+        List<string> operationNames = new List<string>();
+        CollectOperationsRecursive(programGroup, operationNames, camMap);
+        foreach (var key in camMap.Values)
+        {
+            camState[key] = false;
+        }
+    }
+
+    public static void PopulateCamOperationList(ListBox listBox, Dictionary<string, NXOpen.CAM.Operation> camMap, CAMSetup camSetup, Dictionary<NXOpen.CAM.Operation, bool> camState)
+    {
+        try
+        {
+            List<string> camNames = new List<string>();
+
+            // create the names of the CAM operations and add them to the list
+            foreach (var kvp in camMap)
+            {
+                string key = kvp.Key;
+                NXOpen.CAM.Operation camOperation = kvp.Value;
+                string camName = kvp.Value.Name;
+
+                string prefix = camState[camOperation] ? "[x] " : "[ ] ";
+
+                string displayText = prefix + camName + " - " + "[" + key + "]";
+
+                camNames.Add(displayText);
+            }
+
+            listBox.SetListItems(camNames.ToArray());
+        }
+        catch (Exception ex)
+        {
+            /*if (ex.Message.Contains("PopulateCamList"))
+            {
+                return;
+            }*/
+            {
+                UI.GetUI().NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
+            }
+        }
+    }
+
+
+    /*public static void PopulateCamOperationList(ListBox listBox, Dictionary<string, NXOpen.CAM.Operation> camMap, CAMSetup camSetup)
     {
         try
         {
@@ -29,7 +80,7 @@ public static class CamListBuilder
         }
 
         return;
-    }
+    }*/
 
     // populate the listbox with selected cam operations
     public static void PopulateConnectedCamList(ListBox listBox, Dictionary<string, NXOpen.CAM.Operation> camMap, List<NXOpen.CAM.Operation> connectedCam)
@@ -45,9 +96,9 @@ public static class CamListBuilder
             {
                 debugText += $"- {camOperation.Name}\n";
 
-                if (camMap.TryGetValue(camOperation.Name, out var operation))
+                if (camMap.ContainsValue(camOperation))
                 {
-                    operationNames.Add(operation.Name);
+                    operationNames.Add(camOperation.Name);
                 }
             }
             listBox.SetListItems(operationNames.ToArray());
@@ -64,7 +115,9 @@ public static class CamListBuilder
         {
             if (obj is NXOpen.CAM.Operation operation)
             {
-                camMap[operation.Name] = operation;
+                index++;
+                camMap[index.ToString()] = operation;
+                //camMap.Add(operation.Name, operation);
                 operationNames.Add(operation.Name);
             }
             else if (obj is NXOpen.CAM.NCGroup subGroup)
@@ -124,8 +177,10 @@ public static class CamListBuilder
         if (selectedItems == null || selectedItems.Length == 0)
             return null;
 
-        string selectedText = selectedItems[0]; // z. B. "PMI_2 - ..."
-        string key = selectedText;
+
+        // Extract key from list entry, e.g. "... - [key]"
+        string[] parts = selectedItems[0].Split('-');
+        string key = parts[parts.Length - 1].Trim().Trim('[', ']');
 
         if (camMap.TryGetValue(key, out var camOperation))
         {
@@ -135,14 +190,14 @@ public static class CamListBuilder
         return null;
     }
 
-    public static void ComparePmiAndCamFaces(Dictionary<Pmi, bool> pmiState, Dictionary<Pmi, List<Face>> pmiFaceMap, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap, List<Operation> connectedCam)
+    public static void ComparePmiAndCamFaces(Dictionary<Pmi, bool> pmiState, Dictionary<Pmi, List<Face>> pmiFaceMap, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap, List<Operation> connectedCam, Dictionary<NXOpen.CAM.Operation, bool> camState)
     {
         connectedCam.Clear();
         List<Operation> uniqueCamOps = new List<Operation>();
 
         foreach (var pmiEntry in pmiState)
         {
-            if (!pmiEntry.Value) continue;
+            //if (!pmiEntry.Value) continue;
 
             var pmi = pmiFaceMap.Keys.FirstOrDefault(k => k == pmiEntry.Key);
             if (pmi == null || !pmiFaceMap.ContainsKey(pmi)) continue;
@@ -156,12 +211,17 @@ public static class CamListBuilder
                 var camFaces = camEntry.Value;
 
                 if (selectedFaces.Any(face => camFaces.Contains(face)))
-                {
-                    uniqueCamOps.Add(camOperation);
-                }
+                    if (pmiEntry.Value)
+                    {
+                        uniqueCamOps.Add(camOperation);
+                        camState[camOperation] = true;
+                    }
+                    else
+                    {
+                        camState[camOperation] = false;
+                    }
             }
         }
-
         connectedCam.AddRange(uniqueCamOps);
     }
 
@@ -170,6 +230,14 @@ public static class CamListBuilder
     {
         listBox.SetSelectedItemStrings(new string[] { });
         listBox.SetListItems(new string[] { });
+    }
+
+    public static void ClearCamState(Dictionary<NXOpen.CAM.Operation, bool> camState)
+    {
+        foreach (var key in camState.Keys.ToList())
+        {
+            camState[key] = false;
+        }
     }
 
 }
