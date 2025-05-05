@@ -28,7 +28,7 @@ public static class PmiListBuilder
             AssociatedObject assObject = pmi.GetAssociatedObject();
             NXObject[] objekt = assObject.GetObjects();
             // generate a unique key for each PMI
-            string key = pmi.Index.ToString() + " " + pmi.Name.ToString();
+            string key = pmi.Index.ToString();
 
             pmiMap.Add(key, pmi);
 
