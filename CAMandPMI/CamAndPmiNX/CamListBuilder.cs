@@ -190,14 +190,16 @@ public static class CamListBuilder
         return null;
     }
 
-    public static void ComparePmiAndCamFaces(Dictionary<Pmi, bool> pmiState, Dictionary<Pmi, List<Face>> pmiFaceMap, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap, List<Operation> connectedCam, Dictionary<NXOpen.CAM.Operation, bool> camState)
+    public static void ComparePmiAndCamFaces(Dictionary<Pmi, bool> pmiState, Dictionary<Pmi, List<Face>> pmiFaceMap,
+        Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap, List<Operation> connectedCam,
+        Dictionary<NXOpen.CAM.Operation, bool> camState)
     {
         connectedCam.Clear();
         List<Operation> uniqueCamOps = new List<Operation>();
 
         foreach (var pmiEntry in pmiState)
         {
-            //if (!pmiEntry.Value) continue;
+            if (!pmiEntry.Value) continue;
 
             var pmi = pmiFaceMap.Keys.FirstOrDefault(k => k == pmiEntry.Key);
             if (pmi == null || !pmiFaceMap.ContainsKey(pmi)) continue;
@@ -211,18 +213,20 @@ public static class CamListBuilder
                 var camFaces = camEntry.Value;
 
                 if (selectedFaces.Any(face => camFaces.Contains(face)))
-                    if (pmiEntry.Value)
-                    {
-                        uniqueCamOps.Add(camOperation);
-                        camState[camOperation] = true;
-                    }
-                    else
-                    {
-                        camState[camOperation] = false;
-                    }
+                {
+                    uniqueCamOps.Add(camOperation);
+                }
             }
         }
+
         connectedCam.AddRange(uniqueCamOps);
+
+        ClearCamState(camState);
+        // update camstate
+        foreach (var oper in connectedCam)
+        {
+            camState[oper] = true;
+        }
     }
 
     // clear the list of selected cam operations
@@ -239,5 +243,4 @@ public static class CamListBuilder
             camState[key] = false;
         }
     }
-
 }
