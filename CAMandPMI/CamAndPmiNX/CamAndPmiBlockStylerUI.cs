@@ -108,7 +108,18 @@ public class CamPmiUI
         catch (Exception ex)
         {
             //---- Enter your exception handling code here -----
-            theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
+            if (ex.Message.Contains("setup"))
+            {
+                theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, "No CAM setup found.");
+            }
+            /*else if (ex.Message.Contains("part"))
+            {
+                theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, "No part loaded.");
+            }*/
+            else
+            {
+                theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
+            }
         }
     }
 
@@ -167,7 +178,11 @@ public class CamPmiUI
         catch (Exception ex)
         {
             //---- Enter your exception handling code here -----
-            theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
+            if(!ex.ToString().Contains("NullReferenceException"))
+            {
+                theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.Message);
+            }
+            
         }
         return dialogResponse;
     }
