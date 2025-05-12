@@ -55,11 +55,13 @@ public class CamPmiUI
     private static UI theUI = null;
     private string theDlxFileName;
     private NXOpen.BlockStyler.BlockDialog theDialog;
-    private NXOpen.BlockStyler.Button button_clear_highlights;// Block type: Button
     private NXOpen.BlockStyler.ScrolledWindow scrolledWindow;// Block type: Scrolled Window
+    private NXOpen.BlockStyler.Tree pmi_cam_tree_list;// Block type: Tree Control
+    private NXOpen.BlockStyler.ScrolledWindow scrolledWindow1;// Block type: Scrolled Window
     private NXOpen.BlockStyler.ListBox pmi_list_box;// Block type: List Box
+    private NXOpen.BlockStyler.ScrolledWindow scrolledWindow11;// Block type: Scrolled Window
     private NXOpen.BlockStyler.ListBox cam_list_box;// Block type: List Box
-    private NXOpen.BlockStyler.ListBox list_box_connected_cam;// Block type: List Box
+    private NXOpen.BlockStyler.Button button_clear;// Block type: Button
     //private NXOpen.BlockStyler.Toggle toggleCamPmi;// Block type: Toggle
 
     // Added
@@ -74,6 +76,8 @@ public class CamPmiUI
 
     private List<NXOpen.CAM.Operation> connectedCamList = new List<NXOpen.CAM.Operation>();
     private NXOpen.CAM.Operation highlightedOperation;
+
+    private Dictionary<Pmi, List<NXOpen.CAM.Operation>> pmiCamOperationMap = new Dictionary<Pmi, List<NXOpen.CAM.Operation>>();
 
     private Pmi highlightedPMI;
     private NXObject highlightedObject;
@@ -97,7 +101,7 @@ public class CamPmiUI
             camSetup = theSession.Parts.Work.CAMSetup;
 
             string dllDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            theDlxFileName = System.IO.Path.Combine(dllDir, "pmi-cam-2.dlx");
+            theDlxFileName = System.IO.Path.Combine(dllDir, "pmi-cam-3.dlx");
 
             theDialog = theUI.CreateDialog(theDlxFileName);
             theDialog.AddApplyHandler(new NXOpen.BlockStyler.BlockDialog.Apply(apply_cb));
@@ -213,11 +217,13 @@ public class CamPmiUI
     {
         try
         {
-            button_clear_highlights = (NXOpen.BlockStyler.Button)theDialog.TopBlock.FindBlock("button_clear_highlights");
             scrolledWindow = (NXOpen.BlockStyler.ScrolledWindow)theDialog.TopBlock.FindBlock("scrolledWindow");
-            pmi_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("pmi_list_box"); 
-            list_box_connected_cam = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("list_box_connected_cam");
+            pmi_cam_tree_list = (NXOpen.BlockStyler.Tree)theDialog.TopBlock.FindBlock("pmi_cam_tree_list");
+            scrolledWindow1 = (NXOpen.BlockStyler.ScrolledWindow)theDialog.TopBlock.FindBlock("scrolledWindow1");
+            pmi_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("pmi_list_box");
+            scrolledWindow11 = (NXOpen.BlockStyler.ScrolledWindow)theDialog.TopBlock.FindBlock("scrolledWindow11");
             cam_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("cam_list_box");
+            button_clear = (NXOpen.BlockStyler.Button)theDialog.TopBlock.FindBlock("button_clear");
             //toggleCamPmi = (NXOpen.BlockStyler.Toggle)theDialog.TopBlock.FindBlock("toggleCamPmi");
             //------------------------------------------------------------------------------
             //Registration of ListBox specific callbacks
@@ -246,6 +252,10 @@ public class CamPmiUI
     //------------------------------------------------------------------------------
     public void dialogShown_cb()
     {
+        // tree list
+        pmi_cam_tree_list.ShowMultipleColumns = false;
+        pmi_cam_tree_list.InsertColumn(0, "Name", 150);
+
         PmiListBuilder.createPmiLists(pmiMap, pmiFaceMap, pmiState);
         PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState);
         
@@ -322,15 +332,15 @@ public class CamPmiUI
 
                     PmiHighlighter.ToggleHighlight(pmiState, pmiFaceMap);
 
-                    CamListBuilder.ComparePmiAndCamFaces(pmiState, pmiFaceMap, camOperationFaceMap, connectedCamList, camState);
-                    CamListBuilder.PopulateConnectedCamList(list_box_connected_cam, camMap, connectedCamList);
-                  
+                    CamListBuilder.ComparePmiAndCamFaces(pmiState, pmiFaceMap, camOperationFaceMap, connectedCamList, camState, pmiCamOperationMap);
                     CamHighlighter.SelectConnectedCam(pmi_list_box, connectedCamList, camMap);
 
                     CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
+                    pmi_cam_tree_list = CamListBuilder.ClearTree(pmi_cam_tree_list);
+                    CamListBuilder.PopulateConnectedCamList(theUI, pmi_cam_tree_list, camMap, connectedCamList, pmiCamOperationMap);
                 }
             }
-            else if(block == button_clear_highlights)
+            else if(block == button_clear)
             {
                 try
                 {
@@ -338,9 +348,10 @@ public class CamPmiUI
                     PmiHighlighter.ClearPmiHighlight(pmiFaceMap);
                     PmiListBuilder.ClearPmiState(pmiState);
                     PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState); // updates list
-                    CamListBuilder.ClearCamOperationList(list_box_connected_cam);
+                    CamListBuilder.ClearCamOperationList(cam_list_box);
                     CamListBuilder.ClearCamState(camState);
                     CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
+                    pmi_cam_tree_list = CamListBuilder.ClearTree(pmi_cam_tree_list);
                 }
                 catch (Exception ex)
                 {
@@ -366,12 +377,14 @@ public class CamPmiUI
 
                     PmiHighlighter.ToggleHighlight(pmiState, pmiFaceMap);
 
-                    CamListBuilder.ComparePmiAndCamFaces(pmiState, pmiFaceMap, camOperationFaceMap, connectedCamList, camState);
-                    CamListBuilder.PopulateConnectedCamList(list_box_connected_cam, camMap, connectedCamList);
+                    CamListBuilder.ComparePmiAndCamFaces(pmiState, pmiFaceMap, camOperationFaceMap, connectedCamList, camState, pmiCamOperationMap);
 
                     CamHighlighter.SelectConnectedCam(pmi_list_box, connectedCamList, camMap);
 
                     CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
+
+                    pmi_cam_tree_list = CamListBuilder.ClearTree(pmi_cam_tree_list);
+                    CamListBuilder.PopulateConnectedCamList(theUI, pmi_cam_tree_list, camMap, connectedCamList, pmiCamOperationMap);
                 }
             }
 

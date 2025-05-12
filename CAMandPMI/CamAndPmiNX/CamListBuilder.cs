@@ -83,8 +83,36 @@ public static class CamListBuilder
     }*/
 
     // populate the listbox with selected cam operations
-    public static void PopulateConnectedCamList(ListBox listBox, Dictionary<string, NXOpen.CAM.Operation> camMap, List<NXOpen.CAM.Operation> connectedCam)
+    public static void PopulateConnectedCamList(UI theUI, Tree tree, Dictionary<string, NXOpen.CAM.Operation> camMap, List<NXOpen.CAM.Operation> connectedCam, Dictionary<Pmi, List<NXOpen.CAM.Operation>> pmiCamOperationMap)
     {
+
+        try
+        {
+
+            foreach (var kvp in pmiCamOperationMap)
+            {
+                string label = kvp.Key.Name + " " + kvp.Key.Type;
+                var parent = tree.CreateNode(label);
+                tree.InsertNode(parent, null, null, Tree.NodeInsertOption.Last);
+
+                foreach (var cam in kvp.Value)
+                {
+                    var child = tree.CreateNode(cam.Name);
+                    tree.InsertNode(child, parent, null, Tree.NodeInsertOption.Last);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            theUI.NXMessageBox.Show("Warning", NXMessageBox.DialogType.Error, ex.Message);
+        }
+        finally
+        {
+            tree.Redraw(true); // tree is redrawn after all nodes are deleted and added
+        }
+
+
+        /*
         List<string> operationNames = new List<string>();
         string debugText = "Connected CAM Ops:\n";
 
@@ -101,12 +129,23 @@ public static class CamListBuilder
                     operationNames.Add(camOperation.Name);
                 }
             }
-            listBox.SetListItems(operationNames.ToArray());
+
+            NXOpen.BlockStyler.Node parentNode = tree.CreateNode("Operationen");
+            tree.InsertNode(parentNode, null, null, NXOpen.BlockStyler.Tree.NodeInsertOption.Last);
+
+   
+            foreach (string camName in operationNames)
+            {
+                NXOpen.BlockStyler.Node childNode = tree.CreateNode(camName);
+                tree.InsertNode(childNode, parentNode, null, NXOpen.BlockStyler.Tree.NodeInsertOption.Last);
+            }
+
+            //listBox.SetListItems(operationNames.ToArray());
         }
         catch (Exception ex)
         {
             UI.GetUI().NXMessageBox.Show("Exception", NXMessageBox.DialogType.Error, ex.Message);
-        }
+        }*/
     }
 
     private static void CollectOperationsRecursive(NXOpen.CAM.NCGroup group, System.Collections.Generic.List<string> operationNames, Dictionary<string, NXOpen.CAM.Operation> camMap)
@@ -192,9 +231,15 @@ public static class CamListBuilder
 
     public static void ComparePmiAndCamFaces(Dictionary<Pmi, bool> pmiState, Dictionary<Pmi, List<Face>> pmiFaceMap,
         Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap, List<Operation> connectedCam,
-        Dictionary<NXOpen.CAM.Operation, bool> camState)
+        Dictionary<NXOpen.CAM.Operation, bool> camState,
+        Dictionary<Pmi, List<NXOpen.CAM.Operation>> pmiCamOperationMap)
     {
         connectedCam.Clear();
+        // clear pmicamoperationmap
+        foreach (var key in pmiCamOperationMap.Keys.ToList())
+        {
+            pmiCamOperationMap[key].Clear();
+        }
         List<Operation> uniqueCamOps = new List<Operation>();
 
         foreach (var pmiEntry in pmiState)
@@ -215,6 +260,18 @@ public static class CamListBuilder
                 if (selectedFaces.Any(face => camFaces.Contains(face)))
                 {
                     uniqueCamOps.Add(camOperation);
+                    // add the cam operation to the pmicamoperationmap and check if PMI is already in the list
+                    if (pmiCamOperationMap.ContainsKey(pmi))
+                    {
+                        if (!pmiCamOperationMap[pmi].Contains(camOperation))
+                        {
+                            pmiCamOperationMap[pmi].Add(camOperation);
+                        }
+                    }
+                    else
+                    {
+                        pmiCamOperationMap[pmi] = new List<NXOpen.CAM.Operation> { camOperation };
+                    }
                 }
             }
         }
@@ -232,6 +289,8 @@ public static class CamListBuilder
     // clear the list of selected cam operations
     public static void ClearCamOperationList(ListBox listBox)
     {
+        // clear tree 
+
         listBox.SetSelectedItemStrings(new string[] { });
         listBox.SetListItems(new string[] { });
     }
@@ -242,5 +301,44 @@ public static class CamListBuilder
         {
             camState[key] = false;
         }
+    }
+    
+    public static Tree ClearTree(Tree tree)
+    {
+        try
+        {
+            tree.Redraw(false); // prevents the tree from being redrawn while deleting nodes
+            NXOpen.BlockStyler.Node current = tree.RootNode;
+            while (current != null)
+            {
+                NXOpen.BlockStyler.Node next;
+                try
+                {
+                    next = current.NextNode;
+                }
+                catch
+                {
+                    break; // node is not valid anymore
+                }
+                try
+                {
+                    tree.DeleteNode(current);
+                }
+                catch
+                {
+                    break; // access to dead node
+                }
+                current = next;
+            }
+        }
+        catch (Exception ex)
+        {
+            UI.GetUI().NXMessageBox.Show("Warning", NXMessageBox.DialogType.Error, ex.Message);
+        }
+        finally
+        {
+            tree.Redraw(true); // tree is redrawn after all nodes are deleted and added
+        }
+        return tree;
     }
 }
