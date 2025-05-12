@@ -111,6 +111,35 @@ public static class PmiListBuilder
         return null;
     }
 
+    public static void ComparePmiAndCamFaces(NXOpen.CAM.Operation selectedCam, Dictionary<Pmi, bool> pmiState, Dictionary<Pmi, List<Face>> pmiFaceMap, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap, List<Pmi> connectedPmi)
+    {
+        connectedPmi.Clear();
+        List<Pmi> uniquePmis = new List<Pmi>();
+
+        foreach (var pmiEntry in pmiState)
+        {
+            var pmi = pmiFaceMap.Keys.FirstOrDefault(k => k == pmiEntry.Key);
+            if (pmi == null || !pmiFaceMap.ContainsKey(pmi)) continue;
+
+            var selectedFaces = pmiFaceMap[pmi];
+            if (selectedFaces == null || selectedFaces.Count == 0) continue;
+
+            foreach (var camEntry in camOperationFaceMap)
+            {
+                NXOpen.CAM.Operation camOperation = camEntry.Key;
+
+                var camFaces = camEntry.Value;
+                if (selectedCam != null && camOperation.Tag != selectedCam.Tag) continue; // only compare with selected operation
+                if (selectedFaces.Any(face => camFaces.Contains(face)))
+                {
+                    uniquePmis.Add(pmi);
+                }
+            }
+        
+        }
+        connectedPmi.AddRange(uniquePmis);
+    }
+
     // clear pmistate directory to only false 
     public static void ClearPmiState(Dictionary<Pmi, bool> pmiState)
     {

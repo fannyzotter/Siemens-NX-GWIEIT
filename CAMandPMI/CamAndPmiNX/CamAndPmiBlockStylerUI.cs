@@ -66,6 +66,7 @@ public class CamPmiUI
     private Dictionary<string, Pmi> pmiMap = new Dictionary<string, Pmi>();
     private Dictionary<Pmi, List<Face>> pmiFaceMap = new Dictionary<Pmi, List<Face>>();
     public Dictionary<Pmi, bool> pmiState = new Dictionary<Pmi, bool>();
+    public List<Pmi> connectedPmiList = new List<Pmi>();
 
     private Dictionary<string, NXOpen.CAM.Operation> camMap = new Dictionary<string, NXOpen.CAM.Operation>();
     private Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap = new Dictionary<NXOpen.CAM.Operation, List<Face>>();
@@ -350,12 +351,30 @@ public class CamPmiUI
             }
             else if (block == cam_list_box)
             {
-                var selectedCam = CamListBuilder.GetSelectedCam(cam_list_box, camMap);
+                NXOpen.CAM.Operation selectedCam = CamListBuilder.GetSelectedCam(cam_list_box, camMap);
                 if (selectedCam != null)
                 {
                     CamHighlighter.SetCamHighlight(selectedCam, camOperationFaceMap);
+
+                    PmiListBuilder.ComparePmiAndCamFaces(selectedCam, pmiState, pmiFaceMap, camOperationFaceMap, connectedPmiList);
+
+                    foreach (var pmi in connectedPmiList)
+                    {
+                        pmiState[pmi] = !pmiState[pmi];
+                    }
+                    PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState); // updates list
+
+                    PmiHighlighter.ToggleHighlight(pmiState, pmiFaceMap);
+
+                    CamListBuilder.ComparePmiAndCamFaces(pmiState, pmiFaceMap, camOperationFaceMap, connectedCamList, camState);
+                    CamListBuilder.PopulateConnectedCamList(list_box_connected_cam, camMap, connectedCamList);
+
+                    CamHighlighter.SelectConnectedCam(pmi_list_box, connectedCamList, camMap);
+
+                    CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
                 }
             }
+
         }
         catch (Exception ex)
         {
