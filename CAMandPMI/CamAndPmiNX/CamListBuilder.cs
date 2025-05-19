@@ -63,29 +63,11 @@ public static class CamListBuilder
     }
 
 
-    /*public static void PopulateCamOperationList(ListBox listBox, Dictionary<string, NXOpen.CAM.Operation> camMap, CAMSetup camSetup)
-    {
-        try
-        {
-            NCGroup programGroup = camSetup.GetRoot(CAMSetup.View.ProgramOrder);
-
-            List<string> operationNames = new List<string>();
-            CollectOperationsRecursive(programGroup, operationNames, camMap);
-
-            listBox.SetListItems(operationNames.ToArray());
-        }
-        catch (Exception ex)
-        {
-            UI.GetUI().NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
-        }
-
-        return;
-    }*/
-
     // populate the listbox with selected cam operations
-    public static void PopulateConnectedCamList(UI theUI, Tree tree, Dictionary<string, NXOpen.CAM.Operation> camMap, List<NXOpen.CAM.Operation> connectedCam, Dictionary<Pmi, List<NXOpen.CAM.Operation>> pmiCamOperationMap)
+    public static void PopulateConnectedCamList(Tree tree, Dictionary<string, NXOpen.CAM.Operation> camMap, List<NXOpen.CAM.Operation> connectedCam, Dictionary<Pmi, List<NXOpen.CAM.Operation>> pmiCamOperationMap)
     {
 
+        ClearTree(tree);
         try
         {
 
@@ -104,48 +86,11 @@ public static class CamListBuilder
         }
         catch (Exception ex)
         {
-            theUI.NXMessageBox.Show("Warning", NXMessageBox.DialogType.Error, ex.Message);
         }
         finally
         {
             tree.Redraw(true); // tree is redrawn after all nodes are deleted and added
         }
-
-
-        /*
-        List<string> operationNames = new List<string>();
-        string debugText = "Connected CAM Ops:\n";
-
-        try
-        {
-            if (connectedCam == null) return;
-
-            foreach (var camOperation in connectedCam)
-            {
-                debugText += $"- {camOperation.Name}\n";
-
-                if (camMap.ContainsValue(camOperation))
-                {
-                    operationNames.Add(camOperation.Name);
-                }
-            }
-
-            NXOpen.BlockStyler.Node parentNode = tree.CreateNode("Operationen");
-            tree.InsertNode(parentNode, null, null, NXOpen.BlockStyler.Tree.NodeInsertOption.Last);
-
-   
-            foreach (string camName in operationNames)
-            {
-                NXOpen.BlockStyler.Node childNode = tree.CreateNode(camName);
-                tree.InsertNode(childNode, parentNode, null, NXOpen.BlockStyler.Tree.NodeInsertOption.Last);
-            }
-
-            //listBox.SetListItems(operationNames.ToArray());
-        }
-        catch (Exception ex)
-        {
-            UI.GetUI().NXMessageBox.Show("Exception", NXMessageBox.DialogType.Error, ex.Message);
-        }*/
     }
 
     private static void CollectOperationsRecursive(NXOpen.CAM.NCGroup group, System.Collections.Generic.List<string> operationNames, Dictionary<string, NXOpen.CAM.Operation> camMap)
@@ -302,33 +247,21 @@ public static class CamListBuilder
             camState[key] = false;
         }
     }
-    
+
     public static Tree ClearTree(Tree tree)
     {
         try
         {
-            tree.Redraw(false); // prevents the tree from being redrawn while deleting nodes
-            NXOpen.BlockStyler.Node current = tree.RootNode;
-            while (current != null)
+            while (tree.RootNode != null)
             {
-                NXOpen.BlockStyler.Node next;
                 try
                 {
-                    next = current.NextNode;
+                    tree.DeleteNode(tree.RootNode);
                 }
                 catch
                 {
-                    break; // node is not valid anymore
+                    break;
                 }
-                try
-                {
-                    tree.DeleteNode(current);
-                }
-                catch
-                {
-                    break; // access to dead node
-                }
-                current = next;
             }
         }
         catch (Exception ex)
@@ -337,8 +270,10 @@ public static class CamListBuilder
         }
         finally
         {
-            tree.Redraw(true); // tree is redrawn after all nodes are deleted and added
+            tree.Redraw(true);
         }
+
         return tree;
     }
+
 }

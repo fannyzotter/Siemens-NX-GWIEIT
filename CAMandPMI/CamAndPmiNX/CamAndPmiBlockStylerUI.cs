@@ -325,6 +325,8 @@ public class CamPmiUI
                 {
                     NXOpen.Annotations.Pmi selectedPmi = selectedPmiKey;
                     
+                    pmiCamOperationMap.Clear();
+
                     // update the state
                     // if the pmi was marked as selected, unselect it and the other way around
                     pmiState[selectedPmiKey] = !pmiState[selectedPmiKey];
@@ -337,21 +339,22 @@ public class CamPmiUI
 
                     CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
                     pmi_cam_tree_list = CamListBuilder.ClearTree(pmi_cam_tree_list);
-                    CamListBuilder.PopulateConnectedCamList(theUI, pmi_cam_tree_list, camMap, connectedCamList, pmiCamOperationMap);
+                    CamListBuilder.PopulateConnectedCamList(pmi_cam_tree_list, camMap, connectedCamList, pmiCamOperationMap);
                 }
             }
             else if(block == button_clear)
             {
                 try
                 {
+                    pmiCamOperationMap.Clear();
+                    pmi_cam_tree_list = CamListBuilder.ClearTree(pmi_cam_tree_list);
                     CamHighlighter.ClearCamHighlight(camOperationFaceMap);
                     PmiHighlighter.ClearPmiHighlight(pmiFaceMap);
                     PmiListBuilder.ClearPmiState(pmiState);
-                    PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState); // updates list
+                    PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState);
                     CamListBuilder.ClearCamOperationList(cam_list_box);
                     CamListBuilder.ClearCamState(camState);
                     CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
-                    pmi_cam_tree_list = CamListBuilder.ClearTree(pmi_cam_tree_list);
                 }
                 catch (Exception ex)
                 {
@@ -365,6 +368,8 @@ public class CamPmiUI
                 NXOpen.CAM.Operation selectedCam = CamListBuilder.GetSelectedCam(cam_list_box, camMap);
                 if (selectedCam != null)
                 {
+                    pmiCamOperationMap.Clear();
+
                     CamHighlighter.SetCamHighlight(selectedCam, camOperationFaceMap);
 
                     PmiListBuilder.ComparePmiAndCamFaces(selectedCam, pmiState, pmiFaceMap, camOperationFaceMap, connectedPmiList);
@@ -373,7 +378,7 @@ public class CamPmiUI
                     {
                         pmiState[pmi] = !pmiState[pmi];
                     }
-                    PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState); // updates list
+                    PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState);
 
                     PmiHighlighter.ToggleHighlight(pmiState, pmiFaceMap);
 
@@ -384,7 +389,7 @@ public class CamPmiUI
                     CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
 
                     pmi_cam_tree_list = CamListBuilder.ClearTree(pmi_cam_tree_list);
-                    CamListBuilder.PopulateConnectedCamList(theUI, pmi_cam_tree_list, camMap, connectedCamList, pmiCamOperationMap);
+                    CamListBuilder.PopulateConnectedCamList(pmi_cam_tree_list, camMap, connectedCamList, pmiCamOperationMap);
                 }
             }
 
