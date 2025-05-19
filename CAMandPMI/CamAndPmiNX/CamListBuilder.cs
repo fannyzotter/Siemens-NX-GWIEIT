@@ -174,7 +174,9 @@ public static class CamListBuilder
         return null;
     }
 
-    public static void ComparePmiAndCamFaces(Dictionary<Pmi, bool> pmiState, Dictionary<Pmi, List<Face>> pmiFaceMap,
+    public static void ComparePmiAndCamFaces(
+        Dictionary<Pmi, bool> pmiState, 
+        Dictionary<Pmi, List<Face>> pmiFaceMap,
         Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap, List<Operation> connectedCam,
         Dictionary<NXOpen.CAM.Operation, bool> camState,
         Dictionary<Pmi, List<NXOpen.CAM.Operation>> pmiCamOperationMap)

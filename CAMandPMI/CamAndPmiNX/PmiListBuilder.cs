@@ -116,6 +116,9 @@ public static class PmiListBuilder
         connectedPmi.Clear();
         List<Pmi> uniquePmis = new List<Pmi>();
 
+        // variable to check if the selected operation is in the list
+        bool selectedOperationInList = false;
+
         foreach (var pmiEntry in pmiState)
         {
             var pmi = pmiFaceMap.Keys.FirstOrDefault(k => k == pmiEntry.Key);
@@ -132,12 +135,17 @@ public static class PmiListBuilder
                 if (selectedCam != null && camOperation.Tag != selectedCam.Tag) continue; // only compare with selected operation
                 if (selectedFaces.Any(face => camFaces.Contains(face)))
                 {
+                    selectedOperationInList = true;
                     uniquePmis.Add(pmi);
                 }
             }
         
         }
         connectedPmi.AddRange(uniquePmis);
+        if (!selectedOperationInList)
+        {
+           UI.GetUI().NXMessageBox.Show("Error", NXMessageBox.DialogType.Error, "No PMI found for the selected CAM operation.");
+        }
     }
 
     // clear pmistate directory to only false 
