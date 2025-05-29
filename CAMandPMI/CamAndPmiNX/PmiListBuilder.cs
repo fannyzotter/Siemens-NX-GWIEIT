@@ -144,7 +144,7 @@ public static class PmiListBuilder
         connectedPmi.AddRange(uniquePmis);
         if (!selectedOperationInList)
         {
-           UI.GetUI().NXMessageBox.Show("Error", NXMessageBox.DialogType.Error, "No PMI found for the selected CAM operation.");
+           UI.GetUI().NXMessageBox.Show("Error", NXMessageBox.DialogType.Information, "No PMI found for the selected CAM operation.");
         }
     }
 
