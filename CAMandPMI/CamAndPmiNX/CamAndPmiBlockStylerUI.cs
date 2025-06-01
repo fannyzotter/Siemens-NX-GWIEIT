@@ -80,9 +80,10 @@ public class CamPmiUI
     private NXObject selectedObject;
 
     private Feature highlightedFeature;
+    private NXOpen.CAM.CAMFeature[] camFeatures;
+    private NXOpen.CAM.Operation[] camOperations;
     private NXOpen.CAM.Operation selectedCam;
     private NCGroup camGroup;
-    private CAMSetup camSetup;
 
     //------------------------------------------------------------------------------
     //Constructor for NX Styler class
@@ -94,8 +95,8 @@ public class CamPmiUI
             theSession = Session.GetSession();
             theUI = UI.GetUI();
 
-            camSetup = theSession.Parts.Work.CAMSetup;
-
+            camFeatures = theSession.Parts.Work.CAMFeatures.ToArray();
+            
             string dllDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             theDlxFileName = System.IO.Path.Combine(dllDir, "pmi-cam-2.dlx");
 
@@ -249,9 +250,9 @@ public class CamPmiUI
         PmiListBuilder.createPmiLists(pmiMap, pmiFaceMap, pmiState);
         PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState);
         
-        CamListBuilder.createCamOperationLists(camSetup, camMap,camState);
-        CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
-        CamListBuilder.PopulateCamWithFaces(camSetup, camMap, camOperationFaceMap);
+        CamListBuilder.createCamOperationLists(camFeatures, camMap,camState);
+        CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camState);
+        CamListBuilder.PopulateCamWithFaces(camFeatures, camMap, camOperationFaceMap);
 
         
         // initialize pmiStates: in the beginning all PMIs are not selected
@@ -327,7 +328,7 @@ public class CamPmiUI
                   
                     CamHighlighter.SelectConnectedCam(pmi_list_box, connectedCamList, camMap);
 
-                    CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
+                    CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camState);
                 }
             }
             else if(block == button_clear_highlights)
@@ -340,7 +341,7 @@ public class CamPmiUI
                     PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState); // updates list
                     CamListBuilder.ClearCamOperationList(list_box_connected_cam);
                     CamListBuilder.ClearCamState(camState);
-                    CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
+                    CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camState);
                 }
                 catch (Exception ex)
                 {
@@ -371,7 +372,7 @@ public class CamPmiUI
 
                     CamHighlighter.SelectConnectedCam(pmi_list_box, connectedCamList, camMap);
 
-                    CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
+                    CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camState);
                 }
             }
 
