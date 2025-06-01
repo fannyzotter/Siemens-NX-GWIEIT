@@ -10,25 +10,37 @@ using Operation = NXOpen.CAM.Operation;
 using NXOpen.Annotations;
 using System.Linq;
 using static NXOpen.Annotations.Pmi;
+using static NXOpen.CAE.AeroStructures.MatrixManip;
 
 public static class CamListBuilder
 
 {
     // for CollectOperationsRecursive
-    static int index = 0;
 
-    public static void createCamOperationLists(CAMSetup camSetup, Dictionary<string, NXOpen.CAM.Operation> camMap, Dictionary<NXOpen.CAM.Operation, bool> camState)
+    public static void createCamOperationLists(CAMFeature[] camFeatures, Dictionary<string, NXOpen.CAM.Operation> camMap, Dictionary<NXOpen.CAM.Operation, bool> camState)
     {
-        NCGroup programGroup = camSetup.GetRoot(CAMSetup.View.ProgramOrder);
+        NXOpen.CAM.Operation[] camOperations;
         List<string> operationNames = new List<string>();
-        CollectOperationsRecursive(programGroup, operationNames, camMap);
+
+        foreach (var camFeature in camFeatures)
+        {
+            if (camFeature is NXOpen.CAM.CAMFeature)
+            {
+                camOperations = camFeature.GetOperations();
+                foreach (var operation in camOperations)
+                {
+                    camMap[operation.Tag.ToString()] = operation;
+                    operationNames.Add(operation.Name);
+                }
+            }
+        }
         foreach (var key in camMap.Values)
         {
             camState[key] = false;
         }
     }
 
-    public static void PopulateCamOperationList(ListBox listBox, Dictionary<string, NXOpen.CAM.Operation> camMap, CAMSetup camSetup, Dictionary<NXOpen.CAM.Operation, bool> camState)
+    public static void PopulateCamOperationList(ListBox listBox, Dictionary<string, NXOpen.CAM.Operation> camMap, Dictionary<NXOpen.CAM.Operation, bool> camState)
     {
         try
         {
@@ -93,65 +105,30 @@ public static class CamListBuilder
         }
     }
 
-    private static void CollectOperationsRecursive(NXOpen.CAM.NCGroup group, System.Collections.Generic.List<string> operationNames, Dictionary<string, NXOpen.CAM.Operation> camMap)
-    {
-        foreach (TaggedObject obj in group.GetMembers())
-        {
-            if (obj is NXOpen.CAM.Operation operation)
-            {
-                index++;
-                camMap[index.ToString()] = operation;
-                //camMap.Add(operation.Name, operation);
-                operationNames.Add(operation.Name);
-            }
-            else if (obj is NXOpen.CAM.NCGroup subGroup)
-            {
-                CollectOperationsRecursive(subGroup, operationNames, camMap);
-            }
-        }
-    }
-
     // Function to populate a dictionary with a list for all faces for each cam operation
-    public static void PopulateCamWithFaces(CAMSetup camSetup, Dictionary<string, NXOpen.CAM.Operation> camMap, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap)
+    public static void PopulateCamWithFaces(CAMFeature[] camFeatures, Dictionary<string, NXOpen.CAM.Operation> camMap, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap)
     {
-        NCGroup camGroup = camSetup.GetRoot(CAMSetup.View.Geometry);
-
         foreach (var camOperation in camMap)
         {
             List<Face> camFaces = new List<Face>();
             Operation currentOperation = camOperation.Value;
 
-            CollectGeometriesRecursive(camGroup, camFaces, currentOperation);
+            foreach (CAMFeature feature in camFeatures)
+            {
+                NXOpen.CAM.Operation[] featureOps = feature.GetOperations();
+                foreach (NXOpen.CAM.Operation op in featureOps)
+                {
+                    if (op.Tag == currentOperation.Tag)
+                    {
+                        camFaces.AddRange(feature.GetFaces());
+                        break;
+                    }
+                }
+            }
             camOperationFaceMap[currentOperation] = camFaces;
         }
     }
 
-    private static void CollectGeometriesRecursive(NXOpen.CAM.NCGroup group,  System.Collections.Generic.List<Face> camFaces, Operation currentOperation)
-    {
-        foreach (TaggedObject obj in group.GetMembers())
-        {
-            if (obj is NXOpen.CAM.FeatureGeometryGroup geometry)
-            {
-                CAMFeature[] features = geometry.GetFeatures();
-                foreach (CAMFeature feature in features)
-                {
-                    NXOpen.CAM.Operation[] featureOps = feature.GetOperations();
-                    foreach (NXOpen.CAM.Operation op in featureOps)
-                    {
-                        if (op.Tag == currentOperation.Tag)
-                        {
-                            camFaces.AddRange(feature.GetFaces());
-                            break;
-                        }
-                    }
-                }
-            }
-            else if (obj is NXOpen.CAM.NCGroup subGroup)
-            {
-                CollectGeometriesRecursive(subGroup, camFaces, currentOperation);
-            }
-        }
-    }
 
 
     public static Operation GetSelectedCam(ListBox listBox, Dictionary<string, Operation> camMap)
