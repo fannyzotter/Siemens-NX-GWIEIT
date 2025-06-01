@@ -85,9 +85,7 @@ public class CamPmiUI
 
     private Feature highlightedFeature;
     private NXOpen.CAM.CAMFeature[] camFeatures;
-    private NXOpen.CAM.Operation[] camOperations;
     private NXOpen.CAM.Operation selectedCam;
-    private NCGroup camGroup;
 
     //------------------------------------------------------------------------------
     //Constructor for NX Styler class
@@ -101,6 +99,7 @@ public class CamPmiUI
 
             camFeatures = theSession.Parts.Work.CAMFeatures.ToArray();
             
+
             string dllDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             theDlxFileName = System.IO.Path.Combine(dllDir, "pmi-cam-3.dlx");
 
@@ -174,12 +173,12 @@ public class CamPmiUI
     //------------------------------------------------------------------------------
     //This method launches the dialog to screen
     //------------------------------------------------------------------------------
-    public NXOpen.BlockStyler.BlockDialog.DialogResponse Launch()
+    public NXOpen.Selection.Response Launch()
     {
-        NXOpen.BlockStyler.BlockDialog.DialogResponse dialogResponse = NXOpen.BlockStyler.BlockDialog.DialogResponse.Invalid;
+        NXOpen.Selection.Response dialogResponse = NXOpen.Selection.Response.Back;
         try
         {
-            dialogResponse = theDialog.Launch();
+            dialogResponse = theDialog.Show();
         }
         catch (Exception ex)
         {
@@ -338,7 +337,7 @@ public class CamPmiUI
                     CamListBuilder.ComparePmiAndCamFaces(pmiState, pmiFaceMap, camOperationFaceMap, connectedCamList, camState, pmiCamOperationMap);
                     CamHighlighter.SelectConnectedCam(pmi_list_box, connectedCamList, camMap);
 
-                    CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
+                    CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camState);
                     pmi_cam_tree_list = CamListBuilder.ClearTree(pmi_cam_tree_list);
                     CamListBuilder.PopulateConnectedCamList(pmi_cam_tree_list, camMap, connectedCamList, pmiCamOperationMap);
                 }
@@ -387,7 +386,7 @@ public class CamPmiUI
 
                     CamHighlighter.SelectConnectedCam(pmi_list_box, connectedCamList, camMap);
 
-                    CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camSetup, camState);
+                    CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camState);
 
                     pmi_cam_tree_list = CamListBuilder.ClearTree(pmi_cam_tree_list);
                     CamListBuilder.PopulateConnectedCamList(pmi_cam_tree_list, camMap, connectedCamList, pmiCamOperationMap);
