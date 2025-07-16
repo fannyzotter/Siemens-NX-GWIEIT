@@ -11,6 +11,8 @@ public static class CamHighlighter
     private static List<Face> highlightedFaces = new List<Face>();
     private static UFSession ufSession = UFSession.GetUFSession();
 
+    // Highlights the faces associated with the given CAM operation
+    // Before highlighted faces are deactivated
     public static void SetCamHighlight(NXOpen.CAM.Operation operation, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap)
     {
         // deactivate faces of operations before
@@ -40,6 +42,8 @@ public static class CamHighlighter
             }
         }
     }
+
+    // Clears all face highlights from the CAM operations
     public static void ClearCamHighlight(Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap)
     {
         if (ufSession == null)
@@ -67,7 +71,7 @@ public static class CamHighlighter
         highlightedFaces.Clear();
     }
 
-    // function that selects the strings in the listbox of all the matching operations
+    // Selects and highlights the corresponding CAM operations in the listbox
     public static void SelectConnectedCam(ListBox listBox, List<NXOpen.CAM.Operation> connectedCam, Dictionary<string, NXOpen.CAM.Operation> camMap)
     {
         string[] selectedItems = null;
