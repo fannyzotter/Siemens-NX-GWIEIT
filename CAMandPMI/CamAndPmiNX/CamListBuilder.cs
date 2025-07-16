@@ -15,8 +15,7 @@ using static NXOpen.CAE.AeroStructures.MatrixManip;
 public static class CamListBuilder
 
 {
-    // for CollectOperationsRecursive
-
+    // stores all CAM operations in 'camMap', and initializes their selection state in 'camState' to false.
     public static void createCamOperationLists(CAMFeature[] camFeatures, Dictionary<string, NXOpen.CAM.Operation> camMap, Dictionary<NXOpen.CAM.Operation, bool> camState)
     {
         NXOpen.CAM.Operation[] camOperations;
@@ -40,6 +39,7 @@ public static class CamListBuilder
         }
     }
 
+    // Populates a ListBox with all CAM operations, showing their selection state (checked or unchecked) and operation name.
     public static void PopulateCamOperationList(ListBox listBox, Dictionary<string, NXOpen.CAM.Operation> camMap, Dictionary<NXOpen.CAM.Operation, bool> camState)
     {
         try
@@ -64,18 +64,14 @@ public static class CamListBuilder
         }
         catch (Exception ex)
         {
-            /*if (ex.Message.Contains("PopulateCamList"))
-            {
-                return;
-            }*/
             {
                 UI.GetUI().NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
             }
         }
     }
 
-
-    // populate the listbox with selected cam operations
+    // Fills a tree by listing PMIs and their connected CAM operations underneath,
+    // showing the hierarchy of PMI to related CAM operations.
     public static void PopulateConnectedCamList(Tree tree, Dictionary<string, NXOpen.CAM.Operation> camMap, List<NXOpen.CAM.Operation> connectedCam, Dictionary<Pmi, List<NXOpen.CAM.Operation>> pmiCamOperationMap)
     {
 
@@ -105,7 +101,8 @@ public static class CamListBuilder
         }
     }
 
-    // Function to populate a dictionary with a list for all faces for each cam operation
+    // Creates a mapping of CAM operations to their associated faces,
+    // by matching operations from 'camMap' with features from 'camFeatures'.
     public static void PopulateCamWithFaces(CAMFeature[] camFeatures, Dictionary<string, NXOpen.CAM.Operation> camMap, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap)
     {
         foreach (var camOperation in camMap)
@@ -129,30 +126,10 @@ public static class CamListBuilder
         }
     }
 
-
-
-    public static Operation GetSelectedCam(ListBox listBox, Dictionary<string, Operation> camMap)
-    {
-        string[] selectedItems = listBox.GetSelectedItemStrings();
-        listBox.SetSelectedItemStrings(selectedItems); // Set the selected items again to ensure they are highlighted
-        if (selectedItems == null || selectedItems.Length == 0)
-            return null;
-
-
-        // Extract key from list entry, e.g. "... - [key]"
-        string[] parts = selectedItems[0].Split('-');
-        string key = parts[parts.Length - 1].Trim().Trim('[', ']');
-
-        if (camMap.TryGetValue(key, out var camOperation))
-        {
-            return camOperation;
-        }
-
-        return null;
-    }
-
+    // Compares the selected PMIs (pmiState) with CAM operations based on shared faces,
+    // collects connected CAM operations, updates the pmiCamOperationMap and camState accordingly.
     public static void ComparePmiAndCamFaces(
-        Dictionary<Pmi, bool> pmiState, 
+        Dictionary<Pmi, bool> pmiState,
         Dictionary<Pmi, List<Face>> pmiFaceMap,
         Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap, List<Operation> connectedCam,
         Dictionary<NXOpen.CAM.Operation, bool> camState,
@@ -210,15 +187,16 @@ public static class CamListBuilder
         }
     }
 
-    // clear the list of selected cam operations
+    // Clears the list of CAM operations displayed in the ListBox,
+    // resetting both the item list and selected items.
     public static void ClearCamOperationList(ListBox listBox)
     {
         // clear tree 
-
         listBox.SetSelectedItemStrings(new string[] { });
         listBox.SetListItems(new string[] { });
     }
 
+    // Resets the selection state of all CAM operations to false in the camState dictionary
     public static void ClearCamState(Dictionary<NXOpen.CAM.Operation, bool> camState)
     {
         foreach (var key in camState.Keys.ToList())
@@ -227,6 +205,7 @@ public static class CamListBuilder
         }
     }
 
+    // Clears all nodes from the and redraws it,
     public static Tree ClearTree(Tree tree)
     {
         try
