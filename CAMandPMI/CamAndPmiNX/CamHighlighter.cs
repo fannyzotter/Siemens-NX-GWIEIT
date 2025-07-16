@@ -13,7 +13,7 @@ public static class CamHighlighter
 
     public static void SetCamHighlight(NXOpen.CAM.Operation operation, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap)
     {
-        // Vorherige Faces deaktivieren
+        // deactivate faces of operations before
         foreach (var face in highlightedFaces)
         {
             ufSession.Disp.SetHighlight(face.Tag, 0);
@@ -22,7 +22,7 @@ public static class CamHighlighter
 
         if (operation == null) return;
 
-        // Faces für die aktuelle Operation abrufen
+        // get faces for current operations
         if (camOperationFaceMap.TryGetValue(operation, out List<Face> faces))
         {
             foreach (var face in faces)
