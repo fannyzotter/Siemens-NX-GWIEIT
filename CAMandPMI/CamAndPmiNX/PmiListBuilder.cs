@@ -7,7 +7,7 @@ using NXOpen.BlockStyler;
 
 public static class PmiListBuilder
 {
-    // This method collects all PMIs from the currently loaded NX part,
+    // Collects all PMIs from the currently loaded NX part,
     // maps each PMI to a unique string key, associates each PMI with the list of faces it references, 
     // and initializes the boolean state map for each PMI to false (because they are not clicked yet)
     public static void createPmiLists(Dictionary<string, Pmi> pmiMap, Dictionary<Pmi, List<Face>> pmiFaceMap,
@@ -56,7 +56,8 @@ public static class PmiListBuilder
         }
     }
 
-
+    // Populates a ListBox with all PMIs, showing their selection state (checked or unchecked), name, type, and key.
+    // Updates the ListBox with formatted PMI entries
     public static void PopulatePmiList(ListBox listBox, Dictionary<string, Pmi> pmiMap, Dictionary<Pmi, bool> pmiState)
     {
         try
@@ -91,7 +92,7 @@ public static class PmiListBuilder
         }
     }
 
-    // This method compares the faces associated with each PMI against the faces used in a selected CAM operation.
+    // Compares the faces associated with each PMI against the faces used in a selected CAM operation.
     // It collects PMIs connected to the selected CAM operation (based on shared faces) and stores them in 'connectedPmi'.
     // If no matching PMIs are found at all for the selected CAM operation, it shows a message
     public static void ComparePmiAndCamFaces(NXOpen.CAM.Operation selectedCam, Dictionary<Pmi, bool> pmiState, Dictionary<Pmi, List<Face>> pmiFaceMap, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap, List<Pmi> connectedPmi)
@@ -131,7 +132,8 @@ public static class PmiListBuilder
         }
     }
 
-    // clear pmistate directory to only false (when using clear-button)
+    // Resets the selection state of all PMIs by setting their state to false in the pmiState dictionary
+    // (when using clear-button)
     public static void ClearPmiState(Dictionary<Pmi, bool> pmiState)
     {
         foreach (var key in pmiState.Keys.ToList())
@@ -145,5 +147,4 @@ public static class PmiListBuilder
             }
         }
     }
-
 }
