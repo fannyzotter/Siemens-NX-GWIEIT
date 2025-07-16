@@ -2,7 +2,7 @@
 
 ## What Is the PMI–CAM Dialog?
 
-The PMI–CAM dialog is a custom-built tool developed for Siemens NX that allows users to easily explore how PMI annotations are linked to CAM operations within a part file. It is specifically designed to assist engineers and NC programmers during the manufacturing setup process by clearly showing which product features are referenced by each CAM operation. This tool has been tested and validated using Siemens NX 2412. By integrating design and manufacturing data in one interface, the dialog reduces the need to switch between windows and improves clarity. It also helps ensure that critical tolerances, finishes, and dimensions are not overlooked during machining, supporting more accurate and efficient workflows.
+The PMI–CAM dialog is a custom-built tool developed for Siemens NX that allows users to easily explore how PMI annotations are linked to CAM operations within a part file. It is specifically designed to assist engineers and NX programmers during the manufacturing setup process by clearly showing which product features are referenced by each CAM operation. This tool has been tested and validated using Siemens NX 2412. By integrating design and manufacturing data in one interface, the dialog reduces the need to switch between windows and improves clarity. It also helps ensure that critical tolerances, finishes, and dimensions are not overlooked during machining, supporting more accurate and efficient workflows.
 
 ### Why Use It?
 
