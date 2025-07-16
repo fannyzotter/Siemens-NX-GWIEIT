@@ -13,27 +13,6 @@
 //
 //==============================================================================
 
-//==============================================================================
-//  Purpose:  This TEMPLATE file contains C# source to guide you in the
-//  construction of your Block application dialog. The generation of your
-//  dialog file (.dlx extension) is the first step towards dialog construction
-//  within NX.  You must now create a NX Open application that
-//  utilizes this file (.dlx).
-//
-//  The information in this file provides you with the following:
-//
-//  1.  Help on how to load and display your Block UI Styler dialog in NX
-//      using APIs provided in NXOpen.BlockStyler namespace
-//  2.  The empty callback methods (stubs) associated with your dialog items
-//      have also been placed in this file. These empty methods have been
-//      created simply to start you along with your coding requirements.
-//      The method name, argument list and possible return values have already
-//      been provided for you.
-//==============================================================================
-
-//------------------------------------------------------------------------------
-//These imports are needed for the following template code
-//------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
 using NXOpen;
@@ -45,12 +24,9 @@ using NXOpen.Mechatronics;
 using static System.Collections.Specialized.BitVector32;
 using Operation = NXOpen.CAM.Operation;
 
-//------------------------------------------------------------------------------
-//Represents Block Styler application class
-//------------------------------------------------------------------------------
+
 public class CamPmiUI
 {
-    //class members
     private static Session theSession = null;
     private static UI theUI = null;
     private string theDlxFileName;
@@ -62,44 +38,42 @@ public class CamPmiUI
     private NXOpen.BlockStyler.ScrolledWindow scrolledWindow11;// Block type: Scrolled Window
     private NXOpen.BlockStyler.ListBox cam_list_box;// Block type: List Box
     private NXOpen.BlockStyler.Button button_clear;// Block type: Button
-    //private NXOpen.BlockStyler.Toggle toggleCamPmi;// Block type: Toggle
 
-    // Added
+    // PMI Objects in dictionaries to store strings and corresponding faces
     private Dictionary<string, Pmi> pmiMap = new Dictionary<string, Pmi>();
     private Dictionary<Pmi, List<Face>> pmiFaceMap = new Dictionary<Pmi, List<Face>>();
     public Dictionary<Pmi, bool> pmiState = new Dictionary<Pmi, bool>();
     public List<Pmi> connectedPmiList = new List<Pmi>();
 
+    // CAM Objects in dictionaries to store strings and corresponding faces
     private Dictionary<string, NXOpen.CAM.Operation> camMap = new Dictionary<string, NXOpen.CAM.Operation>();
     private Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap = new Dictionary<NXOpen.CAM.Operation, List<Face>>();
     private Dictionary<NXOpen.CAM.Operation, bool> camState = new Dictionary<NXOpen.CAM.Operation, bool>();
 
+    // List of CAM Operation that are connected to a specific set of PMI 
     private List<NXOpen.CAM.Operation> connectedCamList = new List<NXOpen.CAM.Operation>();
-    private NXOpen.CAM.Operation highlightedOperation;
-
+    
+    //--private NXOpen.CAM.Operation highlightedOperation;
+    
+    // all PMI with a List of corresponding CAM Operation
     private Dictionary<Pmi, List<NXOpen.CAM.Operation>> pmiCamOperationMap = new Dictionary<Pmi, List<NXOpen.CAM.Operation>>();
 
-    private Pmi highlightedPMI;
-    private NXObject highlightedObject;
-    private NXObject selectedObject;
-
-    private Feature highlightedFeature;
+    //--private Pmi highlightedPMI;
+    //--private NXObject highlightedObject;
+    //--private NXObject selectedObject;
+    //--private Feature highlightedFeature;
     private NXOpen.CAM.CAMFeature[] camFeatures;
     private NXOpen.CAM.Operation selectedCam;
 
-    //------------------------------------------------------------------------------
-    //Constructor for NX Styler class
-    //------------------------------------------------------------------------------
+    //Constructor
     public CamPmiUI()
     {
         try
         {
             theSession = Session.GetSession();
             theUI = UI.GetUI();
-
             camFeatures = theSession.Parts.Work.CAMFeatures.ToArray();
             
-
             string dllDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             theDlxFileName = System.IO.Path.Combine(dllDir, "pmi-cam-3.dlx");
 
@@ -146,29 +120,14 @@ public class CamPmiUI
     // MUST NOT use this option since it will UNLOAD your NX Open application image
     // from the menubar.
     //------------------------------------------------------------------------------
-    public static int GetUnloadOption(string arg)
-    {
+    //public static int GetUnloadOption(string arg)
+    //{
         //return System.Convert.ToInt32(Session.LibraryUnloadOption.Explicitly);
-        return System.Convert.ToInt32(Session.LibraryUnloadOption.Immediately);
+      //  return System.Convert.ToInt32(Session.LibraryUnloadOption.Immediately);
         // return System.Convert.ToInt32(Session.LibraryUnloadOption.AtTermination);
-    }
+    //}
 
-    //------------------------------------------------------------------------------
-    // Following method cleanup any housekeeping chores that may be needed.
-    // This method is automatically called by NX.
-    //------------------------------------------------------------------------------
-    public static void UnloadLibrary(string arg)
-    {
-        try
-        {
-            //---- Enter your code here -----
-        }
-        catch (Exception ex)
-        {
-            //---- Enter your exception handling code here -----
-            theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
-        }
-    }
+
 
     //------------------------------------------------------------------------------
     //This method launches the dialog to screen
@@ -182,7 +141,6 @@ public class CamPmiUI
         }
         catch (Exception ex)
         {
-            //---- Enter your exception handling code here -----
             if(!ex.ToString().Contains("NullReferenceException"))
             {
                 theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.Message);
@@ -207,10 +165,6 @@ public class CamPmiUI
     }
 
     //------------------------------------------------------------------------------
-    //---------------------Block UI Styler Callback Functions--------------------------
-    //------------------------------------------------------------------------------
-
-    //------------------------------------------------------------------------------
     //Callback Name: initialize_cb
     //------------------------------------------------------------------------------
     public void initialize_cb()
@@ -224,19 +178,6 @@ public class CamPmiUI
             scrolledWindow11 = (NXOpen.BlockStyler.ScrolledWindow)theDialog.TopBlock.FindBlock("scrolledWindow11");
             cam_list_box = (NXOpen.BlockStyler.ListBox)theDialog.TopBlock.FindBlock("cam_list_box");
             button_clear = (NXOpen.BlockStyler.Button)theDialog.TopBlock.FindBlock("button_clear");
-            //toggleCamPmi = (NXOpen.BlockStyler.Toggle)theDialog.TopBlock.FindBlock("toggleCamPmi");
-            //------------------------------------------------------------------------------
-            //Registration of ListBox specific callbacks
-            //------------------------------------------------------------------------------
-            //pmi_list_box.SetAddHandler(new NXOpen.BlockStyler.ListBox.AddCallback(AddCallback));
-
-            //pmi_list_box.SetDeleteHandler(new NXOpen.BlockStyler.ListBox.DeleteCallback(DeleteCallback));
-
-            //cam_list_box.SetAddHandler(new NXOpen.BlockStyler.ListBox.AddCallback(AddCallback));
-
-            //cam_list_box.SetDeleteHandler(new NXOpen.BlockStyler.ListBox.DeleteCallback(DeleteCallback));
-
-            //------------------------------------------------------------------------------
         }
         catch (Exception ex)
         {
@@ -256,15 +197,13 @@ public class CamPmiUI
         pmi_cam_tree_list.ShowMultipleColumns = false;
         pmi_cam_tree_list.InsertColumn(0, "Name", 150);
 
+        // create all the dictionarys with the PMI and CAM Objects and the corresponding faces
         PmiListBuilder.createPmiLists(pmiMap, pmiFaceMap, pmiState);
         PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState);
         
         CamListBuilder.createCamOperationLists(camFeatures, camMap,camState);
         CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camState);
         CamListBuilder.PopulateCamWithFaces(camFeatures, camMap, camOperationFaceMap);
-
-        
-        // initialize pmiStates: in the beginning all PMIs are not selected
 
         // error message if no PMIs or CAM operations are found
         bool noPMIsFound = pmi_list_box.GetListItems().Length == 0;
@@ -287,42 +226,21 @@ public class CamPmiUI
         }
     }
 
-    //------------------------------------------------------------------------------
-    //Callback Name: apply_cb
-    //------------------------------------------------------------------------------
-    public int apply_cb()
-    {
-        int errorCode = 0;
-        try
-        {
-            CamHighlighter.ClearCamHighlight(camOperationFaceMap);
-            PmiHighlighter.ClearPmiHighlight(pmiFaceMap);
-            //---- Enter your callback code here -----
-        }
-        catch (Exception ex)
-        {
-            theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, "hier 1");
-
-            //---- Enter your exception handling code here -----
-            errorCode = 1;
-            theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
-        }
-        return errorCode;
-    }
 
     //------------------------------------------------------------------------------
     //Callback Name: update_cb
+    //Every time the content in the boxes are clicked this update callback is triggered
     //------------------------------------------------------------------------------
     public int update_cb(NXOpen.BlockStyler.UIBlock block)
     {
         try
         {
-            
             if (block == pmi_list_box)
             {
                 Pmi selectedPmiKey = PmiListBuilder.GetSelectedPmiFromList(pmi_list_box, pmiMap);
                 if (pmiState.ContainsKey(selectedPmiKey))
                 {
+                    // set the new selected PMI from the clicked listbox
                     NXOpen.Annotations.Pmi selectedPmi = selectedPmiKey;
                     
                     pmiCamOperationMap.Clear();
@@ -330,8 +248,11 @@ public class CamPmiUI
                     // update the state
                     // if the pmi was marked as selected, unselect it and the other way around
                     pmiState[selectedPmiKey] = !pmiState[selectedPmiKey];
-                    PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState); // updates list
 
+                    // update the pmi_list_box checkboxes 
+                    PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState);
+
+                    // highlicht the corresponding faces for the selected PMI
                     PmiHighlighter.ToggleHighlight(pmiState, pmiFaceMap);
 
                     CamListBuilder.ComparePmiAndCamFaces(pmiState, pmiFaceMap, camOperationFaceMap, connectedCamList, camState, pmiCamOperationMap);
@@ -365,27 +286,25 @@ public class CamPmiUI
             }
             else if (block == cam_list_box)
             {
-                NXOpen.CAM.Operation selectedCam = CamListBuilder.GetSelectedCam(cam_list_box, camMap);
                 if (selectedCam != null)
                 {
                     pmiCamOperationMap.Clear();
 
+                    // hightlicht the corresponding faces
                     CamHighlighter.SetCamHighlight(selectedCam, camOperationFaceMap);
-
                     PmiListBuilder.ComparePmiAndCamFaces(selectedCam, pmiState, pmiFaceMap, camOperationFaceMap, connectedPmiList);
 
+                    //switch states
                     foreach (var pmi in connectedPmiList)
                     {
                         pmiState[pmi] = !pmiState[pmi];
                     }
+                    
                     PmiListBuilder.PopulatePmiList(pmi_list_box, pmiMap, pmiState);
-
                     PmiHighlighter.ToggleHighlight(pmiState, pmiFaceMap);
 
                     CamListBuilder.ComparePmiAndCamFaces(pmiState, pmiFaceMap, camOperationFaceMap, connectedCamList, camState, pmiCamOperationMap);
-
                     CamHighlighter.SelectConnectedCam(pmi_list_box, connectedCamList, camMap);
-
                     CamListBuilder.PopulateCamOperationList(cam_list_box, camMap, camState);
 
                     pmi_cam_tree_list = CamListBuilder.ClearTree(pmi_cam_tree_list);
@@ -401,40 +320,7 @@ public class CamPmiUI
         return 0;
     }
 
-    //------------------------------------------------------------------------------
-    //Callback Name: ok_cb
-    //------------------------------------------------------------------------------
-    public int ok_cb()
-    {
-        int errorCode = 0;
-        try
-        {
-            CamHighlighter.ClearCamHighlight(camOperationFaceMap);
-            PmiHighlighter.ClearPmiHighlight(pmiFaceMap);
-            //errorCode = apply_cb();
-            //---- Enter your callback code here -----
-        }
-        catch (Exception ex)
-        {
-            //---- Enter your exception handling code here -----
-            errorCode = 1;
-            theUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
-        }
-        return errorCode;
-    }
-    //------------------------------------------------------------------------------
-    //ListBox specific callbacks
-    //------------------------------------------------------------------------------
-    //public int  AddCallback (NXOpen.BlockStyler.ListBox list_box)
-    //{
-    //}
-
-    //public int  DeleteCallback(NXOpen.BlockStyler.ListBox list_box)
-    //{
-    //}
-
-    //------------------------------------------------------------------------------
-
+// TODO: check if this is necessary
     //------------------------------------------------------------------------------
     //Function Name: GetBlockProperties
     //Returns the propertylist of the specified BlockID
