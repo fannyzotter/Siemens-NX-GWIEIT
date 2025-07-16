@@ -18,11 +18,11 @@ The PMI–CAM dialog is a custom-built tool developed for Siemens NX that allows
 
 1. Load a part that contains both PMI and CAM data.
 2. Open the dialog (for example, via journal or NX Open execution).
-3. Use the left-hand list to select PMIs and view:
+3. Use the PMI-list to select PMIs and view:
    - Highlighted geometry in the model
    - Related CAM operations in the list and tree
-4. Or select a CAM operation to see which PMIs are associated with it.
-5. Use the tree view to explore how PMIs and CAM operations are linked.
+4. Or select a CAM operation from the CAM-Operations-list to see which PMIs are associated with it.
+5. Use the tree view on top to explore how PMIs and CAM operations are linked.
 6. Use the **"Clear"** button to reset selections and remove all highlights.
 
 ## Installation and Usage Instructions
