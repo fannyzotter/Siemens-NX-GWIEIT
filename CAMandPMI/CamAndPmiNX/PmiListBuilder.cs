@@ -7,6 +7,9 @@ using NXOpen.BlockStyler;
 
 public static class PmiListBuilder
 {
+    // This method collects all PMIs from the currently loaded NX part,
+    // maps each PMI to a unique string key, associates each PMI with the list of faces it references, 
+    // and initializes the boolean state map for each PMI to false (because they are not clicked yet)
     public static void createPmiLists(Dictionary<string, Pmi> pmiMap, Dictionary<Pmi, List<Face>> pmiFaceMap,
         Dictionary<Pmi, bool> pmiState)
     {
@@ -51,7 +54,6 @@ public static class PmiListBuilder
         {
             pmiState[key] = false;
         }
-
     }
 
 
@@ -89,28 +91,9 @@ public static class PmiListBuilder
         }
     }
 
-    public static Pmi GetSelectedPmiFromList(ListBox listBox, Dictionary<string, Pmi> pmiMap)
-    {
-        string[] selectedItems = listBox.GetSelectedItemStrings();
-        listBox.SetSelectedItemStrings(selectedItems); // refresh highlight
-
-        if (selectedItems == null || selectedItems.Length == 0)
-        {
-            return null;
-        }
-
-        // Extract key from list entry, e.g. "... - [key]"
-        string[] parts = selectedItems[0].Split('-');
-        string key = parts[parts.Length - 1].Trim().Trim('[', ']');
-
-        if (pmiMap.TryGetValue(key, out var pmi))
-        {
-            return pmi;
-        }
-
-        return null;
-    }
-
+    // This method compares the faces associated with each PMI against the faces used in a selected CAM operation.
+    // It collects PMIs connected to the selected CAM operation (based on shared faces) and stores them in 'connectedPmi'.
+    // If no matching PMIs are found at all for the selected CAM operation, it shows a message
     public static void ComparePmiAndCamFaces(NXOpen.CAM.Operation selectedCam, Dictionary<Pmi, bool> pmiState, Dictionary<Pmi, List<Face>> pmiFaceMap, Dictionary<NXOpen.CAM.Operation, List<Face>> camOperationFaceMap, List<Pmi> connectedPmi)
     {
         connectedPmi.Clear();
@@ -139,19 +122,18 @@ public static class PmiListBuilder
                     uniquePmis.Add(pmi);
                 }
             }
-        
+
         }
         connectedPmi.AddRange(uniquePmis);
         if (!selectedOperationInList)
         {
-           UI.GetUI().NXMessageBox.Show("Error", NXMessageBox.DialogType.Information, "No PMI found for the selected CAM operation.");
+            UI.GetUI().NXMessageBox.Show("Error", NXMessageBox.DialogType.Information, "No PMI found for the selected CAM operation.");
         }
     }
 
-    // clear pmistate directory to only false 
+    // clear pmistate directory to only false (when using clear-button)
     public static void ClearPmiState(Dictionary<Pmi, bool> pmiState)
     {
-
         foreach (var key in pmiState.Keys.ToList())
         {
             try
@@ -160,7 +142,6 @@ public static class PmiListBuilder
             }
             catch (Exception e)
             {
-                // Optional: Fehlerbehandlung, z. B. Logging
             }
         }
     }
