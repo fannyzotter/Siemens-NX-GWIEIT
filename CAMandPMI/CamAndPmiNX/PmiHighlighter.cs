@@ -11,9 +11,12 @@ public static class PmiHighlighter
 {
     private static UFSession ufSession = UFSession.GetUFSession();
 
+    // Toggles highlighting of PMI faces:
+    // First removes all previous highlights from PMI faces,
+    // then highlights only the faces of PMIs that are marked as active (true) in the pmiState.
     public static void ToggleHighlight(Dictionary<Pmi, bool> pmiState, Dictionary<Pmi, List<Face>> pmiFaceMap)
     {
-        // Alte Highlights entfernen
+        // remove old highlights
         foreach (var kvp in pmiFaceMap)
         {
             if (kvp.Value == null) continue;
@@ -27,14 +30,13 @@ public static class PmiHighlighter
                     }
                     catch (Exception ex)
                     {
-                        // Optional: Logge oder ignoriere einzelne Fehler
+        
                         UI.GetUI().NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.Message);
                     }
                 }
             }
         }
 
-        // Alle aktiven PMI verarbeiten
         foreach (var selectedPmi in pmiState)
         {
             if (!selectedPmi.Value) continue;
@@ -52,7 +54,7 @@ public static class PmiHighlighter
             }
         }
     }
-
+    // Clears all highlighting from faces associated with all PMIs
     public static void ClearPmiHighlight(Dictionary<Pmi, List<Face>> pmiFaceMap)
     {
         if (ufSession == null)
