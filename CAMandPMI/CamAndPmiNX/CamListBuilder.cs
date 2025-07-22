@@ -74,14 +74,14 @@ public static class CamListBuilder
     // showing the hierarchy of PMI to related CAM operations.
     public static void PopulateConnectedCamList(Tree tree, Dictionary<string, NXOpen.CAM.Operation> camMap, List<NXOpen.CAM.Operation> connectedCam, Dictionary<Pmi, List<NXOpen.CAM.Operation>> pmiCamOperationMap)
     {
-
         ClearTree(tree);
         try
         {
-
             foreach (var kvp in pmiCamOperationMap)
             {
-                string label = kvp.Key.Name + " " + kvp.Key.Type;
+                Pmi cuPmi = kvp.Key;
+                int numberOfConnectedCam = kvp.Value.Count;
+                string label = kvp.Key.Name + " " + kvp.Key.Type + " [ID:" + cuPmi.Index.ToString() + "] [connected CAM: " + numberOfConnectedCam.ToString() + "]";
                 var parent = tree.CreateNode(label);
                 tree.InsertNode(parent, null, null, Tree.NodeInsertOption.Last);
 
