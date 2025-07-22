@@ -147,4 +147,28 @@ public static class PmiListBuilder
             }
         }
     }
+
+    // Returns the selected PMI from the ListBox based on the currently selected item.
+    public static Pmi GetSelectedPmiFromList(ListBox listBox, Dictionary<string, Pmi> pmiMap)
+    {
+        string[] selectedItems = listBox.GetSelectedItemStrings();
+        listBox.SetSelectedItemStrings(selectedItems); // refresh highlight
+
+        if (selectedItems == null || selectedItems.Length == 0)
+        {
+            return null;
+        }
+        // Extract key from list entry, e.g. "... - [key]"
+        string[] parts = selectedItems[0].Split('-');
+        string key = parts[parts.Length - 1].Trim().Trim('[', ']');
+        
+        if (pmiMap.TryGetValue(key, out var pmi))
+        {
+            return pmi;
+        }
+        
+        return null;
+    }
+
+
 }
