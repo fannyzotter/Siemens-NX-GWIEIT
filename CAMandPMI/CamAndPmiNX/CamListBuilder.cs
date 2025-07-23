@@ -234,4 +234,24 @@ public static class CamListBuilder
         return tree;
     }
 
+    public static Operation GetSelectedCam(ListBox listBox, Dictionary<string, Operation> camMap)
+    {
+        string[] selectedItems = listBox.GetSelectedItemStrings();
+        listBox.SetSelectedItemStrings(selectedItems); // Set the selected items again to ensure they are highlighted
+        if (selectedItems == null || selectedItems.Length == 0)
+            return null;
+
+
+        // Extract key from list entry, e.g. "... - [key]"
+        string[] parts = selectedItems[0].Split('-');
+        string key = parts[parts.Length - 1].Trim().Trim('[', ']');
+
+        if (camMap.TryGetValue(key, out var camOperation))
+        {
+            return camOperation;
+        }
+
+        return null;
+    }
+
 }

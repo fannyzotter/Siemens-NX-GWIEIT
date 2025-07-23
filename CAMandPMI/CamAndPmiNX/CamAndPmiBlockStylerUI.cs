@@ -286,6 +286,7 @@ public class CamPmiUI
             }
             else if (block == cam_list_box)
             {
+                selectedCam = CamListBuilder.GetSelectedCam(cam_list_box, camMap);
                 if (selectedCam != null)
                 {
                     pmiCamOperationMap.Clear();
